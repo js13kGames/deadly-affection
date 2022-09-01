@@ -1,6 +1,6 @@
 import { Change } from 'object-observer';
 import { observeState, unobserveState } from '../helpers/observers';
-import { hideBoxShadow, hideGlowEffect, showBoxShadow, showGlowEffect } from '../helpers/particles';
+import { hideBoxShadow, showBoxShadow } from '../helpers/particles';
 import { el, mount } from '../helpers/redom';
 import { getSVGElement } from '../helpers/utilities';
 import { Screen, state } from '../systems/state';
@@ -11,20 +11,11 @@ export type NavigationItem = {
 	iconElement?: HTMLElement;
 	label: string;
 	color: string;
-	particleColor: string;
 	icon: string;
 };
 
 export class Navigation {
 	observerId: number;
-
-	particleId: number | null = null;
-
-	private particles: { [key in Screen]: number | null } = {
-		game: null,
-		upgrades: null,
-		goals: null,
-	};
 
 	root: HTMLElement;
 
@@ -73,12 +64,6 @@ export class Navigation {
 	};
 
 	private selectNavItem = (newScreen: Screen) => {
-		const particleId = this.particles[newScreen];
-		if (particleId != null) {
-			hideGlowEffect(particleId);
-			this.particles[newScreen] = null;
-		}
-
 		Object.entries(this.items).forEach((item) => {
 			if (item[1].root != null) {
 				if (item[0] === newScreen) {
@@ -90,15 +75,6 @@ export class Navigation {
 			}
 		});
 	};
-
-	glow(screenKey: Screen) {
-		if (state.screen === screenKey || this.particles[screenKey] != null) {
-			return;
-		}
-
-		const item = this.items[screenKey];
-		this.particles[screenKey] = showGlowEffect(this.root, item.root!, item.particleColor, 2);
-	}
 
 	destroy = () => {
 		unobserveState(this.observerId);

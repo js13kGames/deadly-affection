@@ -376,43 +376,9 @@ export function processTweens(time: number) {
 	}
 }
 
-export const animateNumber = (
-	element: HTMLElement,
-	from: number,
-	to: number,
-	abbreviate = false,
-	duration = 500
-): void => {
-	tween({
-		target: element,
-		from: { value: from },
-		to: { value: to },
-		duration,
-		abbreviate,
-		easing: 'easeInOutCubic',
-	});
-
-	tween({
-		target: element,
-		from: { y: 0 },
-		to: { y: -5 },
-		duration: 100,
-		easing: 'linear',
-		onComplete: (target) => {
-			tween({
-				target,
-				from: { y: -5 },
-				to: { y: 0 },
-				duration: 400,
-				easing: 'easeOutBounce',
-			});
-		},
-	});
-};
-
 export function floatText(container: HTMLElement, content: string, top: number, right: number, delay = 0, duration = 800) {
 	const text = el('b.float', content);
-	
+
 	text.style.top = `${top}px`;
 	text.style.right = `${right}px`;
 

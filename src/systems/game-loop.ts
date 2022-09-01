@@ -27,7 +27,6 @@ export function processTime(time: number) {
 	time = Math.max(0, time);
 
 	state.processedAt += time;
-	state.gold += time * 0.1;
 
 	if (state.sound) {
 		state.timeWithMusicOn += time;

@@ -4,7 +4,6 @@ import { observeState, unobserveState } from '../helpers/observers';
 import { Setting, state } from '../systems/state';
 import { el, mount } from '../helpers/redom';
 import { zzfxX } from '../systems/zzfx';
-import { effects } from '../helpers/particles';
 import { floatText } from '../helpers/animations';
 
 export class ToggleSetting {
@@ -47,27 +46,6 @@ export class ToggleSetting {
 			}
 			if (showTooltip) {
 				floatText(this.root, `Sound: ${newState ? 'ON' : 'OFF'}`, 4, 40, 500, 500);
-			}
-		}
-
-		if (this.path === 'particles') {
-			effects.forEach((effect) => {
-				if (effect) {
-					if (effect.active != state.particles) {
-						if (state.particles) {
-							effect.root.style.opacity = '1';
-							effect.animationCallbacks.forEach((animate) => animate());
-						} else {
-							effect.root.style.opacity = '0';
-						}
-					}
-
-					effect.active = state.particles;
-				}
-			});
-
-			if (showTooltip) {
-				floatText(this.root, `Particles: ${newState ? 'ON' : 'OFF'}`, 4, 40, 500, 500);
 			}
 		}
 

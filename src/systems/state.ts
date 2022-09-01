@@ -3,33 +3,31 @@ import { processTime } from './game-loop';
 
 const localStorageKey = 'unknown';
 
-export type Screen = 'game' | 'upgrades' | 'goals';
-export type Setting = 'sound' | 'particles' | 'fullscreen';
+export type Screen = 'game' | 'levels';
+export type Setting = 'sound' | 'fullscreen';
 
 export type State = {
 	startedAt: number;
 	processedAt: number;
-	gold: number;
 	screen: Screen;
 	sound: boolean | null;
 	coilTotal: number;
-	particles: boolean;
 	fullscreen: boolean;
 	timeWithMusicOn: number;
-	goals: boolean[];
+	level: number;
+	progress: { [key: number]: [boolean, number] };
 };
 
 export const emptyState: State = {
 	startedAt: Date.now(),
 	processedAt: Date.now(),
-	gold: 0,
 	screen: 'game',
 	sound: null,
 	coilTotal: 0,
-	particles: true,
 	fullscreen: document.fullscreenElement != null,
 	timeWithMusicOn: 0,
-	goals: [],
+	level: 0,
+	progress: {},
 };
 
 export let state: State;
@@ -60,9 +58,4 @@ export function loadState() {
 
 export function saveState() {
 	localStorage.setItem(localStorageKey, JSON.stringify(state));
-}
-
-export function restartGame() {
-	state = emptyState;
-	saveState();
 }

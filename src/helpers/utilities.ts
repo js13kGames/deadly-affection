@@ -39,8 +39,10 @@ export function abbreviateNumber(num: number, digit: number = 1, options: any = 
 	return (!sign ? '-' : '') + rounded + suffix;
 }
 
-export function getSVGElement(svgString: string, color: string): HTMLElement {
-	svgString = svgString.replace('[fill]', `fill="${color}"`);
+export function getSVGElement(svgString: string, color?: string): HTMLElement {
+	if (color) {
+		svgString = svgString.replace('[fill]', `fill="${color}"`);
+	}
 
 	const parser = new DOMParser();
 	return parser.parseFromString(svgString, 'image/svg+xml').documentElement;

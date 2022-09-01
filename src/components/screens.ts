@@ -11,7 +11,7 @@ export class Screens {
 
 		const screenValues = Object.entries(this.screens);
 		screenValues.forEach((screen) => {
-			// screen[1].classList.add(screen[0]);
+			screen[1].classList.add(screen[0] + '-screen');
 			mount(container, screen[1]);
 		});
 

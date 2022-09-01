@@ -9,11 +9,10 @@ import { el, mount } from '../helpers/redom';
 import { SVGs } from '../helpers/svgs';
 import { randomIntFromInterval } from '../helpers/utilities';
 import { createGameScreen, gameNavItem } from '../screens/game';
-import { createGoalsScreen, goalsNavItem } from '../screens/goals';
-import { createUpgradesScreen, upgradesNavItem } from '../screens/upgrades';
+import { createLevelsScreen, levelsNavItem } from '../screens/levels';
 import { buyItem, getBoughtItems, isLoggedInWithNEAR, loginWithNEAR, logoutWithNEAR, walletConnection } from './near';
-import { restartGame } from './state';
 import { getCoilEarnings } from './coil';
+import { playLevel } from './play';
 
 export let gameContainer: HTMLElement;
 
@@ -22,24 +21,6 @@ export let navigation: Navigation;
 
 export function initGame() {
 	gameContainer = el('div.game');
-
-	new LinkSetting(gameContainer, SVGs.trash, '#a10000', 4, 4, () => {
-		openModal(gameContainer, 'Restart Game', 'All your progress will be lost!', [
-			{
-				type: 'normal',
-				content: 'Cancel',
-				onClickCallback: () => {},
-			},
-			{
-				type: 'danger',
-				content: 'Restart',
-				onClickCallback: () => {
-					restartGame();
-					location.reload();
-				},
-			},
-		], null);
-	});
 
 	new LinkSetting(gameContainer, SVGs.discord, '#5865F2', 4, 360, 'https://discord.gg/kPf8XwNuZT');
 	new LinkSetting(gameContainer, SVGs.coffee, '#FBAA19', 40, 360, 'https://ko-fi.com/martintale?ref=unknown');
@@ -117,23 +98,20 @@ export function initGame() {
 		});
 	});
 
-	new ToggleSetting(gameContainer, SVGs.sound, 'sound', 46, 4);
-	new ToggleSetting(gameContainer, SVGs.particles, 'particles', 82, 4);
-	new ToggleSetting(gameContainer, SVGs.fullscreen, 'fullscreen', 118, 4);
+	new ToggleSetting(gameContainer, SVGs.sound, 'sound', 4, 4);
+	new ToggleSetting(gameContainer, SVGs.fullscreen, 'fullscreen', 40, 4);
 
 
 
 
 	screens = new Screens(gameContainer, {
+		levels: createLevelsScreen(),
 		game: createGameScreen(),
-		upgrades: createUpgradesScreen(),
-		goals: createGoalsScreen(),
 	});
 
 	navigation = new Navigation(gameContainer, {
+		levels: levelsNavItem,
 		game: gameNavItem,
-		upgrades: upgradesNavItem,
-		goals: goalsNavItem,
 	});
 
 	mount(document.body, gameContainer);
@@ -150,7 +128,7 @@ export function initGame() {
 			randomIntFromInterval(50, 200),
 			randomIntFromInterval(20, 350)
 		);
-	}, 500);
+	}, 5000);
 
 	// TODO: Check highlights on mobile and desktop
 }
