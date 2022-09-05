@@ -1,3 +1,9 @@
+:root {
+	--bg: #03182b;
+	--color: #8be9ff;
+	--shadow: #4f838f;
+}
+
 /**
  * 1. Correct the line height in all browsers.
  * 2. Prevent adjustments of font size after orientation changes in iOS.
@@ -70,6 +76,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
+	background: linear-gradient(0deg, var(--bg) 0%, #060606 100%);
 }
 
 small {
@@ -132,8 +139,6 @@ svg {
 	min-width: 400px;
 	max-width: 400px;
 	height: 600px;
-	background: #111;
-	background: linear-gradient(0deg, #111 0%, #060606 100%);
 	flex-direction: column;
 	justify-content: flex-start;
 	align-items: center;
@@ -167,7 +172,7 @@ svg {
 	border: 1px solid #fff;
 	border-radius: 4px;
 	opacity: 0.4;
-	z-index: 1;
+	z-index: 5;
 	cursor: pointer;
 }
 
@@ -199,7 +204,7 @@ svg {
 	padding: 4px 16px 8px 16px;
 	border-radius: 8px;
 	margin: 16px;
-	z-index: 1;
+	z-index: 5;
 	background: #0c0c0c;
 }
 
@@ -248,6 +253,7 @@ button.primary {
 	width: 100%;
 	height: 100%;
 	z-index: 100;
+	box-shadow: 0 0 250px #000, 0 0 250px #000;
 	opacity: 0;
 }
 
@@ -408,7 +414,7 @@ button.primary {
 
 .game-screen svg {
 	position: absolute;
-	z-index: 2;
+	z-index: 4;
 	pointer-events: none;
 }
 
@@ -420,13 +426,12 @@ button.primary {
 }
 
 .cell {
-	border: 2px solid #8be9ff;
-	overflow: hidden;
+	border: 2px solid var(--color);
 }
 
 .cell.start {
-	background: #03182b;
-	box-shadow: 0 0 3px #4f838f, 0 0 6px #4f838f, 0 0 9px #4f838f;
+	background: var(--bg);
+	box-shadow: 0 0 3px var(--shadow), 0 0 6px var(--shadow), 0 0 9px var(--shadow);
 }
 
 .cell.end {
@@ -444,7 +449,7 @@ button.primary {
 	transform-origin: center;
 	position: absolute;
 	cursor: pointer;
-	z-index: 1;
+	z-index: 3;
 	transition: all 150ms ease-in-out;
 	border-radius: 5px;
 }
@@ -456,10 +461,10 @@ button.primary {
 }
 
 .line {
-	background: #8be9ff;
-	box-shadow: 0 0 3px #2f525a, 0 0 6px #2f525a, 0 0 9px #2f525a;
+	background: var(--color);
+	box-shadow: 0 0 3px var(--shadow), 0 0 6px var(--shadow), 0 0 9px var(--shadow);
 	position: absolute;
-	z-index: 0;
+	z-index: 2;
 	pointer-events: none;
 	transform-origin: bottom;
 	mix-blend-mode: lighten;
@@ -515,6 +520,27 @@ b.sep:after {
 	height: 80px;
 	margin: 10px;
     border: 2px solid #fff;
-    border-radius: 5px;
 	cursor: pointer;
+	border-radius: 5px;
+	transform: scale(0.25);
+	transition: all 500ms cubic-bezier(0.3, 0.53, 0.08, 1.5);
+	animation: spin 1s linear infinite;
+}
+
+.arcadians img.active {
+	transform: scale(1);
+	animation: none;
+}
+
+#canvas {
+	position: fixed;
+    z-index: 0;
+	filter: blur(1px);
+	pointer-events: none;
+}
+
+@keyframes spin { 
+	100% { 
+        rotate: 360deg;
+    }
 }

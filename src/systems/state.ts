@@ -11,6 +11,7 @@ export type State = {
 	coilTotal: number;
 	near: boolean;
 	arcadian: {
+		bg: string;
 		color: string;
 		shadow: string;
 		image: string;
@@ -26,6 +27,7 @@ export const emptyState: State = {
 	coilTotal: 0,
 	near: false,
 	arcadian: {
+		bg: '',
 		color: '',
 		shadow: '',
 		image: '',

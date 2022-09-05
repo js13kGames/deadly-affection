@@ -1,6 +1,8 @@
 import { el, mount } from '../helpers/redom';
 import { Button, createButton } from './button';
 
+let modalElement: HTMLElement;
+
 export function openModal(
 	container: HTMLElement,
 	header: string | HTMLElement | HTMLElement[], 
@@ -8,13 +10,11 @@ export function openModal(
 	buttons: Button[] = [],
 	onCloseCallback: (() => void) | null,
 ) {
-	let modalElement: HTMLElement;
+	closeModal();
 
 	const modalOverlay = el('div.modal-overlay');
 	modalOverlay.onclick = () => {
-		if (modalElement != null) {
-			modalElement.remove();
-		}
+		closeModal();
 
 		if (onCloseCallback != null) {
 			onCloseCallback();
@@ -32,9 +32,7 @@ export function openModal(
 					button.onClickCallback(e);
 				}
 		
-				if (modalElement != null) {
-					modalElement.remove();
-				}
+				closeModal();
 
 				if (onCloseCallback != null) {
 					onCloseCallback();
@@ -68,4 +66,10 @@ export function openModal(
 	});
 
 	return modalElement;
+}
+
+export function closeModal() {
+	if (modalElement != null) {
+		modalElement.remove();
+	}
 }

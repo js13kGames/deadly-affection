@@ -1,6 +1,6 @@
 import { Button } from './../components/button';
 import { LinkSetting } from '../components/link-setting';
-import { openModal } from '../components/modal';
+import { closeModal, openModal } from '../components/modal';
 import { Screens } from '../components/screens';
 import { ToggleSetting } from '../components/toggle-setting';
 import { el, mount } from '../helpers/redom';
@@ -55,6 +55,10 @@ export function openCoilScreen() {
 export async function openNearScreen() {
 	{
 		let nearButtons: Button[] = [{
+			type: 'normal',
+			content: 'Close',
+			onClickCallback: () => {},
+		}, {
 			type: 'primary',
 			content: 'Login',
 			onClickCallback: loginWithNEAR,
@@ -87,6 +91,10 @@ export async function openNearScreen() {
 			const levelsBought = items.find((item: any) => item.item === 'levels');
 
 			nearButtons = [{
+				type: 'normal',
+				content: 'Close',
+				onClickCallback: () => {},
+			}, {
 				type: levelsBought ? 'primary' : 'normal',
 				content: 'Tip',
 				onClickCallback: () => {
@@ -165,21 +173,24 @@ function getAverageRGB(imgEl: HTMLImageElement) {
 
 export async function openArcadiaScreen() {
 	const arcadianContainer = el('div.arcadians'); // arcadians.length > 0 ? el(, arcadians) : el('b', 'Failed to load Arcadians :(');
-	const loading = el('b.sep', 'loading');
-	
-	const modal = openModal(gameContainer, 'Arcadia', [
+
+	openModal(gameContainer, 'Arcadia', [
 		el('p', 'Pick an Arcadian!'),
-		loading,
 		arcadianContainer,
 	], [{
 		type: 'danger',
 		content: 'Reset',
 		onClickCallback: () => {
 			state.arcadian = {
+				bg: '',
 				color: '',
 				shadow: '',
 				image: '',
 			};
+
+			document.documentElement.style.setProperty('--bg', '#03182b');
+			document.documentElement.style.setProperty('--color', '#8be9ff');
+			document.documentElement.style.setProperty('--shadow', '#4f838f');
 
 			playLevel(state.level);
 			state.screen = 'game';
@@ -192,9 +203,16 @@ export async function openArcadiaScreen() {
 		type: 'primary',
 		content: 'Refresh',
 		onClickCallback: () => {
-			openArcadiaScreen();
+			requestAnimationFrame(openArcadiaScreen);
 		},
 	}], () => {});
+
+	const images: HTMLImageElement[] = [];
+
+	for (let i = 0; i < 9; i += 1) {
+		images.push(el('img') as HTMLImageElement);
+		mount(arcadianContainer, images[i]);
+	}
 
 	for (let i = 0; i < 9; i += 1) {
 		const arcadian = await (await fetch('https://api.arcadians.io/' + randomIntFromInterval(1, 3000))).json();
@@ -208,34 +226,38 @@ export async function openArcadiaScreen() {
 				reader.readAsDataURL(blob);
 			});
 
-			const arcadianImage = el('img') as HTMLImageElement;
-			arcadianImage.onload = () => {
-				const colorValues = getAverageRGB(arcadianImage);
+			images[i].onload = () => {
+				const colorValues = getAverageRGB(images[i]);
+
+				const bg = 'rgb(' + (Math.max(0, colorValues.r - 150)) + ',' + (Math.max(0, colorValues.g - 150)) + ',' + (Math.max(0, colorValues.b - 150)) + ')';
 				const color = 'rgb(' + (Math.min(255, colorValues.r + 75)) + ',' + (Math.min(255, colorValues.g + 75)) + ',' + (Math.min(255, colorValues.b + 75)) + ')';
 				const shadow = 'rgb(' + (Math.min(255, colorValues.r + 25)) + ',' + (Math.min(255, colorValues.g + 25)) + ',' + (Math.min(255, colorValues.b + 25)) + ')';
+
+				images[i].style.borderColor = color;
+				images[i].style.boxShadow = '0 0 3px ' + shadow + ', 0 0 6px ' + shadow + ', 0 0 9px ' + shadow;
+
+				images[i].classList.add('active');
 				
-				arcadianImage.style.borderColor = color;
-				arcadianImage.style.boxShadow = '0 0 3px ' + shadow + ', 0 0 6px ' + shadow + ', 0 0 9px ' + shadow;
-				
-				arcadianImage.onclick = () => {
+				images[i].onclick = () => {
 					state.arcadian = {
+						bg,
 						color,
 						shadow,
 						image: dataUrl,
 					};
 
+					document.documentElement.style.setProperty('--bg', bg);
+					document.documentElement.style.setProperty('--color', color);
+					document.documentElement.style.setProperty('--shadow', shadow);
+
 					playLevel(state.level);
 					state.screen = 'game';
 
-					modal.remove()
-				}
-
-				if (i == 8) {
-					loading.remove();
+					closeModal();
 				}
 			};
-			arcadianImage.src = dataUrl;
-			mount(arcadianContainer, arcadianImage);
+
+			images[i].src = dataUrl;
 		}
 	}
 }
@@ -246,9 +268,9 @@ export function initGame() {
 	new LinkSetting(gameContainer, SVGs.discord, '#5865F2', 4, 360, 'https://discord.gg/kPf8XwNuZT');
 	new LinkSetting(gameContainer, SVGs.coffee, '#FBAA19', 40, 360, 'https://ko-fi.com/martintale?ref=deadly-connection');
 
-	new LinkSetting(gameContainer, SVGs.near, '#FFFFFF', 76, 360, openNearScreen);
-	new LinkSetting(gameContainer, SVGs.coil, '#FFFFFF', 112, 360, openCoilScreen);
-	new LinkSetting(gameContainer, SVGs.joystick, '#ff3ed9', 148, 360, openArcadiaScreen);
+	new LinkSetting(gameContainer, SVGs.near, '#FFFFFF', 82, 360, openNearScreen);
+	new LinkSetting(gameContainer, SVGs.coil, '#FFFFFF', 118, 360, openCoilScreen);
+	new LinkSetting(gameContainer, SVGs.joystick, '#ff3ed9', 158, 360, openArcadiaScreen);
 
 	new ToggleSetting(gameContainer, SVGs.sound, 'sound', 4, 4);
 	new ToggleSetting(gameContainer, SVGs.fullscreen, 'fullscreen', 40, 4);
@@ -263,8 +285,6 @@ export function initGame() {
 
 	globalThis.onresize = resizeGame;
 	resizeGame();
-
-	// TODO: Check highlights on mobile and desktop
 }
 
 export function getScale() {

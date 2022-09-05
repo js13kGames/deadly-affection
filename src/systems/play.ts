@@ -89,10 +89,7 @@ export function playLevel(level: number) {
 			let padding = 0;
 
 			if (cellValue.name !== 'start' || state.arcadian.image === '') {
-				padding = (cellSize - cellMargin * 2) * 0.1;
-			} else {
-				cellValue.cellElement.style.borderColor = state.arcadian.color;
-				cellValue.cellElement.style.boxShadow = '0 0 3px ' + state.arcadian.shadow + ', 0 0 6px ' + state.arcadian.shadow + ', 0 0 9px ' + state.arcadian.shadow + '';
+				padding = (cellSize - cellMargin * 2) * 0.2;
 			}
 
 			setCellSizeAndPosition(
@@ -143,10 +140,10 @@ function getNeighboringCells(x: number, y: number): [Base, Base, Base, Base] {
 }
 
 function setCellSizeAndPosition(cellElement: HTMLElement, size: number, bottom: number, left: number) {
-	cellElement.style.width = size + 'px';
-	cellElement.style.height = size + 'px';
-	cellElement.style.bottom = bottom + 'px';
-	cellElement.style.left = left + 'px';
+	cellElement.style.width = Math.floor(size) + 'px';
+	cellElement.style.height = Math.floor(size) + 'px';
+	cellElement.style.bottom = Math.floor(bottom) + 'px';
+	cellElement.style.left = Math.floor(left) + 'px';
 }
 
 export function processPuzzleProgress() {

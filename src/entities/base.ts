@@ -2,7 +2,6 @@ import { playSound } from '../components/music';
 import { el, mount } from '../helpers/redom';
 import { screens } from '../systems/game';
 import { processPuzzleProgress } from '../systems/play';
-import { state } from '../systems/state';
 import { Rotation } from './../data/levels';
 
 export type PathDirection = Rotation[] | Rotation | null;
@@ -140,21 +139,13 @@ export class Base {
 	addLine(direction: 0 | 1 | 2 | 3) {
 		const line = el('div.line');
 
-		const lineLength = this.distanceToCenter * 2.6;
+		const lineLength = this.distanceToCenter * 2.8;
 
 		line.style.width = '2px';
 		line.style.height = lineLength + 'px';
 		line.style.bottom = (this.bottom + this.distanceToCenter) + 'px';
 		line.style.left = (this.left + this.distanceToCenter) + 'px';
 		line.style.transform = 'rotate(' + 90 * direction + 'deg)';
-
-		if (state.arcadian.color) {
-			line.style.background = state.arcadian.color;
-		}
-
-		if (state.arcadian.shadow) {
-			line.style.background = '0 0 3px ' + state.arcadian.shadow + ', 0 0 6px ' + state.arcadian.shadow + ', 0 0 9px ' + state.arcadian.shadow + '';
-		}
 
 		// if (direction === 0) {
 		// 	line.style.width = '2px';
