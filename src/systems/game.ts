@@ -91,6 +91,10 @@ export async function openNearScreen() {
 			const levelsBought = items.find((item: any) => item.item === 'levels');
 
 			nearButtons = [{
+				type: 'danger',
+				content: 'Logout',
+				onClickCallback: logoutWithNEAR,
+			}, {
 				type: 'normal',
 				content: 'Close',
 				onClickCallback: () => {},
@@ -111,12 +115,6 @@ export async function openNearScreen() {
 					},
 				});
 			}
-
-			nearButtons.push({
-				type: 'danger',
-				content: 'Logout',
-				onClickCallback: logoutWithNEAR,
-			});
 		} else {
 			nearContent.push(el('p', 'Login to access your purchases!'));
 		}
@@ -273,8 +271,12 @@ export function initGame() {
 	new LinkSetting(gameContainer, SVGs.joystick, '#ff3ed9', 158, 360, openArcadiaScreen);
 
 	new ToggleSetting(gameContainer, SVGs.sound, 'sound', 4, 4);
-	new ToggleSetting(gameContainer, SVGs.fullscreen, 'fullscreen', 40, 4);
-	new ToggleSetting(gameContainer, SVGs.levels, 'screen', 76, 4);
+	let settingTop = 40;
+	if (document.fullscreenEnabled) {
+		new ToggleSetting(gameContainer, SVGs.fullscreen, 'fullscreen', 40, 4);
+		settingTop = 76
+	}
+	new ToggleSetting(gameContainer, SVGs.levels, 'screen', settingTop, 4);
 	
 	screens = new Screens(gameContainer, {
 		levels: createLevelsScreen(),
