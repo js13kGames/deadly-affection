@@ -1,6 +1,7 @@
 import { el } from '../helpers/redom';
 import { SVGs } from '../helpers/svgs';
 import { getSVGElement } from '../helpers/utilities';
+import { state } from '../systems/state';
 import { Base } from './base';
 
 export class Start extends Base {
@@ -8,36 +9,24 @@ export class Start extends Base {
 		rotation: number,
 		cellKey: string,
 	) {
+		let img = null;
+		
+		if (state.arcadian.image != '') {
+			img = el('img') as HTMLImageElement;
+			img.src = state.arcadian.image;
+		}
+
 		super(
+			'start',
 			cellKey,
-			el('div.cell'),
-			getSVGElement(SVGs.necromancer),
+			el('div.cell', img),
+			img ? el('div.empty') : getSVGElement(SVGs.necromancer),
 			rotation,
 			true,
 			true,
+			[0, 0, 0, 0],
 		);
 
-		this.paths = [null, null, 0, null];
-		this.inputs = [false, false, true, false];
+		this.inputs = [true, true, true, true];
 	}
-
-	// play(input?: number) {
-	// 	console.log('============');
-	// 	console.log('play - start - ' + this.cellKey);
-
-	// 	this.logState();
-
-	// 	if (input == null) {
-	// 		for (let i = 0; i < this.outputs.length; i += 1) {
-	// 			if (this.outputs[i]) {
-	// 				const neighbor = this.neighbors[(this.rotation + i) % 4];
-
-	// 				if (neighbor) {
-	// 					console.log(' -> ' + neighbor.cellKey);
-	// 					neighbor.play((this.rotation + i + 2) % 4);
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 }

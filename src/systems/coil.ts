@@ -1,3 +1,4 @@
+import { renderLevels } from '../screens/levels';
 import { state } from './state';
 
 declare global {
@@ -10,11 +11,18 @@ let scale: number;
 let currency: string;
 
 export function initCoil() {
+	let oldCoilEarnings = state.coilTotal;
 	if (document.monetization) {
 		document.monetization.addEventListener('monetizationprogress', (ev: any) => {
 			scale = ev.detail.assetScale;
 			currency = ev.detail.assetCode;
+
 			state.coilTotal += Number(ev.detail.amount);
+
+			if (oldCoilEarnings <= 0) {
+				oldCoilEarnings = state.coilTotal;
+				renderLevels();
+			}
 		});
     }
 }

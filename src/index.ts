@@ -1,5 +1,4 @@
 import { initGame } from './systems/game';
-import { initGameLoop } from './systems/game-loop';
 import { initGameState, saveState, state } from './systems/state';
 import { initMusic } from './components/music';
 import { initNEAR } from './systems/near';
@@ -11,7 +10,6 @@ window.addEventListener('DOMContentLoaded', () => {
 	initNEAR();
 	initCoil();
 	initGame();
-	initGameLoop();
 	initMusic();
 
 	playLevel(state.level);

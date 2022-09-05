@@ -1,3 +1,6 @@
+import { renderLevels } from '../screens/levels';
+import { state } from './state';
+
 declare global {
 	interface Window {
 		nearApi: any; // 👈️ turn off type checking
@@ -10,7 +13,7 @@ export let nearConnection: any;
 export let walletConnection: any;
 
 export async function initNEAR() {
-	const userKeyStore = new window.nearApi.keyStores.BrowserLocalStorageKeyStore(localStorage, 'unknown_')
+	const userKeyStore = new window.nearApi.keyStores.BrowserLocalStorageKeyStore(localStorage, 'deadly-connection_')
 
 	const connectionConfig = {
 		networkId: "testnet",
@@ -24,7 +27,18 @@ export async function initNEAR() {
 
 	nearConnection = await window.nearApi.connect(connectionConfig);
 
-	walletConnection = new window.nearApi.WalletConnection(nearConnection, 'unknown_');
+	walletConnection = new window.nearApi.WalletConnection(nearConnection, 'deadly-connection_');
+
+	if (isLoggedInWithNEAR()) {
+		const items = await getBoughtItems();
+
+		const levelsBought = items.find((item: any) => item.item === 'levels');
+
+		if (levelsBought && !state.near) {
+			state.near = true;
+			renderLevels();
+		}
+	}
 }
 
 export function isLoggedInWithNEAR() {

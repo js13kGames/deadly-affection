@@ -9,38 +9,14 @@ export class TurnOneSide extends Base {
 		cellKey: string,
 	) {
 		super(
+			'turn-one-side',
 			cellKey,
 			el('div.cell', getSVGElement(SVGs['turn-one-side'])),
 			el('div.empty'),
 			rotation,
 			true,
 			false,
+			[1, 0, null, null],
 		);
 	}
-
-	// interact(input?: number) {
-	// 	console.log('play - turn one side - ' + this.cellKey);
-	// 	if (input != null) {
-	// 		const inputSide = (input - this.rotation % 4 + 4) % 4;
-
-	// 		let outputSide;
-	// 		if (inputSide === 0) {
-	// 			outputSide = (1 + this.rotation) % 4;
-	// 		} else if (inputSide === 1) {
-	// 			outputSide = (0 + this.rotation) % 4;
-	// 		}
-
-	// 		console.log(this.neighbors);
-	// 		console.log(input, this.rotation, inputSide + ' -> ' + outputSide);
-
-	// 		if (outputSide != null) {
-	// 			const neighbor = this.neighbors[outputSide];
-
-	// 			if (neighbor) {
-	// 				console.log(' -> ' + neighbor.cellKey);
-	// 				neighbor.interact((outputSide + 2) % 4);
-	// 			}
-	// 		}
-	// 	}
-	// }
 }

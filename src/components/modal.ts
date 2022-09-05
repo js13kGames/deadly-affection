@@ -62,4 +62,10 @@ export function openModal(
 	]);
 
 	mount(container, modalElement);
+
+	requestAnimationFrame(() => {
+		modalElement.classList.add('active');
+	});
+
+	return modalElement;
 }

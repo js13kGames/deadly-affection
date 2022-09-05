@@ -1,31 +1,36 @@
 import { createStateObserver } from '../helpers/observers';
-import { processTime } from './game-loop';
 
-const localStorageKey = 'unknown';
+const localStorageKey = 'deadly-connection';
 
 export type Screen = 'game' | 'levels';
-export type Setting = 'sound' | 'fullscreen';
+export type Setting = 'sound' | 'fullscreen' | 'screen';
 
 export type State = {
-	startedAt: number;
-	processedAt: number;
 	screen: Screen;
 	sound: boolean | null;
 	coilTotal: number;
+	near: boolean;
+	arcadian: {
+		color: string;
+		shadow: string;
+		image: string;
+	};
 	fullscreen: boolean;
-	timeWithMusicOn: number;
 	level: number;
 	progress: { [key: number]: [boolean, number] };
 };
 
 export const emptyState: State = {
-	startedAt: Date.now(),
-	processedAt: Date.now(),
 	screen: 'game',
 	sound: null,
 	coilTotal: 0,
+	near: false,
+	arcadian: {
+		color: '',
+		shadow: '',
+		image: '',
+	},
 	fullscreen: document.fullscreenElement != null,
-	timeWithMusicOn: 0,
 	level: 0,
 	progress: {},
 };
@@ -40,8 +45,6 @@ export function initGameState() {
 	document.onfullscreenchange = () => {
 		state.fullscreen = document.fullscreenElement != null;
 	}
-
-	processTime(Date.now() - state.processedAt);
 
 	setInterval(saveState, 5000);
 }

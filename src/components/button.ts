@@ -1,4 +1,5 @@
 import { el } from '../helpers/redom';
+import { playSound } from './music';
 
 export type ButtonType = 'normal' | 'primary' | 'danger' | 'disabled';
 
@@ -16,7 +17,10 @@ export function createButton(
 	const buttonContent = typeof contentOrButton === 'string' ? contentOrButton : '';
 
 	const button = el('button.' + type, buttonContent) as HTMLButtonElement;
-	button.onclick = onClickCallback;
+	button.onclick = (e) => {
+		playSound('tap');
+		onClickCallback(e);
+	}
 
 	return button;
 }

@@ -76,6 +76,9 @@ small {
 	width: 100%;
 	display: block;
 	line-height: 1;
+	font-size: 0.75rem;
+	text-align: right;
+    font-family: monospace;
 }
 
 h1 {
@@ -140,7 +143,8 @@ svg {
 
 .screen {
 	width: 100%;
-	height: 530px;
+	height: 600px;
+	overflow: hidden;
 	flex-direction: column;
 	padding: 15px;
 	text-align: center;
@@ -153,50 +157,6 @@ svg {
 .screen.active {
 	pointer-events: all;
 	opacity: 1;
-}
-
-.navigation {
-	width: 100%;
-	height: 70px;
-	background: #000;
-	box-shadow: 0 0 3px #000, 0 0 6px #000, 0 0 9px #000;
-	position: absolute;
-	bottom: 0;
-}
-
-.navigation .item {
-	width: 50px;
-	height: 50px;
-	flex-direction: column;
-	background: #111;
-	box-shadow: inset 0 0 3px #000, inset 0 0 6px #000;
-	padding: 5px;
-	border-radius: 5px;
-	margin: 0 1rem;
-	cursor: pointer;
-}
-
-.navigation .item svg {
-	transition: none;
-	filter: grayscale(0.5);
-}
-
-.navigation .item.active svg {
-	filter: grayscale(0);
-}
-
-.navigation .item.active {
-	transform: scale(1.05);
-}
-
-.navigation .item:hover {
-	transform: scale(1.05);
-}
-
-.navigation .item strong {
-	font-size: 0.45rem;
-	margin-top: 5px;
-	text-align: right;
 }
 
 .setting {
@@ -259,8 +219,10 @@ svg {
 
 button {
 	margin: 0 0.5rem;
-	border: 1px solid #333;
-	background-color: #444;
+	border: 1px solid #666;
+    background-color: #333;
+	padding: 2px 10px 4px;
+	font-size: 0.75rem;
 	border-radius: 4px;
 	color: #fff;
 	cursor: pointer;
@@ -273,12 +235,12 @@ button.disabled {
 
 button.danger {
 	background-color: rgb(158, 0, 0);
-	border-color: rgb(177, 0, 0);
+	border-color: #ff0000;
 }
 
 button.primary {
 	background-color: rgb(0, 69, 158);
-	border-color: rgb(0, 80, 184);
+	border-color: #006fff;
 }
 
 .modal {
@@ -286,13 +248,18 @@ button.primary {
 	width: 100%;
 	height: 100%;
 	z-index: 100;
+	opacity: 0;
+}
+
+.modal.active {
+	opacity: 1;
 }
 
 .modal-overlay {
 	position: absolute;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.75);
 	z-index: 101;
 }
 
@@ -302,12 +269,19 @@ button.primary {
 	padding: 1rem;
 	z-index: 102;
 	background-color: #111;
-	border: 1px solid #333;
+	border: 2px solid #333;
 	box-shadow: 0 0 5px #000;
 	border-radius: 4px;
 	text-align: center;
 	flex-direction: column;
 	min-width: 50%;
+	overflow: hidden;
+	transform: translateY(50px);
+	transition: opacity 250ms transform 1000ms;
+}
+
+.active .modal-container {
+	transform: translateY(0);
 }
 
 .modal-container header {
@@ -345,29 +319,39 @@ button.primary {
 	flex-wrap: wrap-reverse;
 	height: auto;
 	bottom: 75px;
+	bottom: 0;
 }
 
 .level {
 	width: 72px;
 	height: 72px;
-	background: rgb(229, 217, 147);
+	background: #222;
 	margin: 10px;
 	flex-direction: column;
 	cursor: pointer;
 	justify-content: flex-end;
 	border-radius: 5px;
-	opacity: 0.5;
+	border: 2px solid #666;
+    box-shadow: 0 1px 3px #000, 0 2px 6px #000, 0 3px 9px #000;
 }
 
-.level.done {
-	box-shadow: 0 0 15px green;
-	background: rgb(57, 77, 27);
-	opacity: 1;
+.level.locked, .level.locked:hover {
+	background: #111;
+	border: 2px solid #333;
+    box-shadow: 0 1px 3px #000, 0 2px 6px #000, 0 3px 9px #000;
+}
+
+.level.done, .level.done:hover {
+	border-color: #498f39;
+	background: #052c07;
+	box-shadow: 0 1px 3px #052c07, 0 2px 6px #052c07, 0 3px 9px #052c07;
 }
 
 .level:hover {
 	transform: scale(1.05);
-	opacity: 1;
+	border-color: #4d85b9;
+	background: #05192c;
+	box-shadow: 0 1px 3px #05192c, 0 2px 6px #05192c, 0 3px 9px #05192c;
 }
 
 .level b {
@@ -378,17 +362,42 @@ button.primary {
 .hearts {
 	width: 100%;
 	height: 30px;
+	margin: -10px 0 4px 0;
 }
 
 .hearts svg {
-	width: 20px;
-    height: 20px;
-    filter: grayscale(1) brightness(2) drop-shadow(0 0 2px #000);
+	width: 17px;
+    height: 17px;
     margin: 1px;
+	fill: #222;
+	filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 4px #000);
+}
+
+.done .hearts svg {
+	fill: #052c07;
+	filter: drop-shadow(0 0 2px #498f39) drop-shadow(0 0 4px #498f39);
 }
 
 .hearts svg.done {
-	filter: grayscale(0) drop-shadow(0 0 2px #000);
+	fill: #860000;
+	filter: drop-shadow(0 0 2px #498f39) drop-shadow(0 0 4px #498f39);
+}
+
+.modal-container .hearts {
+	height: 60px;
+}
+
+.modal-container .hearts svg {
+	width: 40px;
+	height: 40px;
+	transform: scale(0.5);
+	filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 4px #000);
+	transition: all 500ms cubic-bezier(0.3, 0.53, 0.08, 2);
+}
+
+.modal-container .hearts svg.done {
+	transform: scale(1);
+	filter: drop-shadow(0 0 2px #490606) drop-shadow(0 0 4px #490606);
 }
 
 .game-screen {
@@ -399,27 +408,113 @@ button.primary {
 
 .game-screen svg {
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	pointer-events: none;
 }
 
+.game-screen img {
+	width: 100%;
+    height: 100%;
+	pointer-events: none;
+	transition: none;
+}
+
 .cell {
+	border: 2px solid #8be9ff;
+	overflow: hidden;
+}
+
+.cell.start {
+	background: #03182b;
+	box-shadow: 0 0 3px #4f838f, 0 0 6px #4f838f, 0 0 9px #4f838f;
+}
+
+.cell.end {
+	border-color: #ffc9ff;
+	background: #2a132a;
+	box-shadow: 0 0 3px #553555, 0 0 6px #553555, 0 0 9px #553555;
+}
+
+.end.active {
+	filter: grayscale(1);
+	transform: rotate(180deg);
+}
+
+.cell, .empty {
 	transform-origin: center;
 	position: absolute;
 	cursor: pointer;
-	background: sandybrown;
-}
-
-.cell::before {
-	content: '';
-    width: 10px;
-    height: 10px;
-    position: absolute;
-    transform: rotate(45deg);
-    background: #9c9;
-    top: -5px;
+	z-index: 1;
+	transition: all 150ms ease-in-out;
+	border-radius: 5px;
 }
 
 .empty {
-	display: none;
+	cursor: default;
+	pointer-events: none;
+	background: transparent;
+}
+
+.line {
+	background: #8be9ff;
+	box-shadow: 0 0 3px #2f525a, 0 0 6px #2f525a, 0 0 9px #2f525a;
+	position: absolute;
+	z-index: 0;
+	pointer-events: none;
+	transform-origin: bottom;
+	mix-blend-mode: lighten;
+}
+
+.collectable {
+	fill: #222;
+	transform: scale(0.5)!important;
+	filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 4px #000);
+	transition: all 500ms cubic-bezier(0.3, 0.53, 0.08, 2);
+}
+
+.collectable.active {
+	fill: #CB0A08;
+	transform: scale(0.75)!important;
+	filter: drop-shadow(0 0 2px #490606) drop-shadow(0 0 4px #490606);
+}
+
+b.sep {
+	overflow: hidden;
+	text-align: center;
+	width: 100%;
+	margin: 8px 50px 0;
+}
+
+b.sep:before,
+b.sep:after {
+	background-color: #333;
+	content: "";
+	display: inline-block;
+	height: 1px;
+	position: relative;
+	vertical-align: middle;
+	width: 50%;
+}
+
+b.sep:before {
+	right: 0.5em;
+	margin-left: -50%;
+}
+
+b.sep:after {
+	left: 0.5em;
+	margin-right: -50%;
+}
+
+.arcadians {
+	flex-wrap: wrap;
+}
+
+.arcadians img {
+	width: 80px;
+	height: 80px;
+	margin: 10px;
+    border: 2px solid #fff;
+    border-radius: 5px;
+	cursor: pointer;
 }

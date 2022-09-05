@@ -1,6 +1,7 @@
 import { el, mount } from '../helpers/redom';
 import { getSVGElement } from '../helpers/utilities';
 import { createExternalLink } from './external-link';
+import { playSound } from './music';
 
 export class LinkSetting {
 	root: HTMLElement;
@@ -11,7 +12,10 @@ export class LinkSetting {
 
 		if (typeof link === 'function') {
 			this.root = el('div', iconElement);
-			this.root.onclick = link;
+			this.root.onclick = () => {
+				playSound('tap');
+				link();
+			}
 		} else {
 			this.root = createExternalLink(iconElement, link);
 		}

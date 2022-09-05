@@ -4,7 +4,7 @@ import { observeState, unobserveState } from '../helpers/observers';
 import { Setting, state } from '../systems/state';
 import { el, mount } from '../helpers/redom';
 import { zzfxX } from '../systems/zzfx';
-import { floatText } from '../helpers/animations';
+import { playSound } from './music';
 
 export class ToggleSetting {
 	observerId: number;
@@ -20,12 +20,22 @@ export class ToggleSetting {
 
 		mount(container, this.root);
 
-		this.renderState(state[path] as boolean, false);
-
-		this.root.onclick = () => {
-			state[path] = !state[path];
-			this.renderState(state[path] as boolean);
-		};
+		if (path === 'screen') {
+			state.screen = 'game';
+			this.renderState(state[path] === 'levels', false);
+			this.root.onclick = () => {
+				playSound('tap');
+				state[path] = state[path] === 'game' ? 'levels' : 'game';	
+				this.renderState(state[path] === 'levels');
+			};
+		} else {
+			this.renderState(state[path] as boolean, false);
+			this.root.onclick = () => {
+				playSound('tap');
+				state[path] = !state[path];
+				this.renderState(state[path] as boolean);
+			};
+		}
 	}
 
 	private onChange = (change: Change) => {
@@ -44,9 +54,6 @@ export class ToggleSetting {
 			if (zzfxX != null) {
 				newState ? zzfxX.resume() : zzfxX.suspend();
 			}
-			if (showTooltip) {
-				floatText(this.root, `Sound: ${newState ? 'ON' : 'OFF'}`, 4, 40, 500, 500);
-			}
 		}
 
 		if (this.path === 'fullscreen' && showTooltip) {
@@ -55,8 +62,6 @@ export class ToggleSetting {
 			} else if (document.exitFullscreen) {
 				document.exitFullscreen();
 			}
-
-			floatText(this.root, `Fullscreen: ${newState ? 'ON' : 'OFF'}`, 4, 40, 500, 500);
 		}
 	};
 

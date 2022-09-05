@@ -1,18 +1,12 @@
 import { EntityCollectable } from './../data/levels';
 import { el, mount } from '../helpers/redom';
-import { NavigationItem } from '../components/navigation';
 import { SVGs } from '../helpers/svgs';
 import { levels } from '../data/levels';
 import { state } from '../systems/state';
 import { getSVGElement } from '../helpers/utilities';
 import { playLevel } from '../systems/play';
-
-export const levelsNavItem: NavigationItem = {
-	root: null,
-	icon: SVGs.levels,
-	color: '#cdb422',
-	label: 'LEVELS',
-};
+import { playSound } from '../components/music';
+import { openCoilScreen, openNearScreen } from '../systems/game';
 
 const levelScreen = el('div.screen');
 
@@ -33,7 +27,7 @@ export function renderLevels() {
 		const collectableElements = [];
 
 		for (let j = 0; j < collectablesInLevel; j += 1) {
-			const collectableElement = getSVGElement(SVGs.hearts, '#d0021b');
+			const collectableElement = getSVGElement(SVGs.hearts);
 
 			if (collectablesCollected > j) {
 				collectableElement.classList.add('done');
@@ -51,10 +45,48 @@ export function renderLevels() {
 			levelContainer.classList.add('done');
 		}
 
-		levelContainer.onclick = () => {
-			playLevel(i);
+		if (i >= 12 && i <= 14) {
+			if (state.coilTotal <= 0) {
+				levelContainer.classList.add('locked');
+			}
+		}
+
+		if (i >= 15 && i <= 17) {
+			if (!state.near) {
+				levelContainer.classList.add('locked');
+			}
+		}
+
+		levelContainer.onclick = async () => {
+			playSound('tap');
+
+			if (i >= 12 && i <= 14) {
+				if (state.coilTotal > 0) {
+					playLevel(i);
+				} else {
+					openCoilScreen();
+				}
+			} else if (i >= 15 && i <= 17) {
+				if (state.near) {
+					playLevel(i);
+				} else {
+					await openNearScreen();
+				}
+			} else {
+				playLevel(i);
+			}
 		};
 
 		mount(levelScreen, levelContainer);
+
+		if (i == 11) {
+			mount(levelScreen, el('b.sep', 'Normal'));
+		}
+		if (i == 14) {
+			mount(levelScreen, el('b.sep', 'Coil'));
+		}
+		if (i == 17) {
+			mount(levelScreen, el('b.sep', 'NEAR'));
+		}
 	}
 }

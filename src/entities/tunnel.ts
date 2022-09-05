@@ -3,19 +3,20 @@ import { SVGs } from '../helpers/svgs';
 import { getSVGElement } from '../helpers/utilities';
 import { Base } from './base';
 
-export class Block extends Base {
+export class Tunnel extends Base {
 	constructor(
 		rotation: number,
 		cellKey: string,
 	) {
 		super(
-			'block',
+			'tunnel',
 			cellKey,
-			el('div.cell'),
-			getSVGElement(SVGs['pirate-grave']),
+			el('div.cell', getSVGElement(SVGs.tunnel)),
+			el('div.empty'),
 			rotation,
+			true,
 			false,
-			false,
+			[2, null, 0, null],
 		);
 	}
 }
