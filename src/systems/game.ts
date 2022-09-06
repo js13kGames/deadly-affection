@@ -227,7 +227,7 @@ export async function openArcadiaScreen() {
 			images[i].onload = () => {
 				const colorValues = getAverageRGB(images[i]);
 
-				const bg = 'rgb(' + (Math.max(0, colorValues.r - 150)) + ',' + (Math.max(0, colorValues.g - 150)) + ',' + (Math.max(0, colorValues.b - 150)) + ')';
+				const bg = 'rgb(' + (Math.max(0, colorValues.r - 130)) + ',' + (Math.max(0, colorValues.g - 130)) + ',' + (Math.max(0, colorValues.b - 130)) + ')';
 				const color = 'rgb(' + (Math.min(255, colorValues.r + 75)) + ',' + (Math.min(255, colorValues.g + 75)) + ',' + (Math.min(255, colorValues.b + 75)) + ')';
 				const shadow = 'rgb(' + (Math.min(255, colorValues.r + 25)) + ',' + (Math.min(255, colorValues.g + 25)) + ',' + (Math.min(255, colorValues.b + 25)) + ')';
 

@@ -32,8 +32,11 @@ body {
 *::after,
 *:focus {
 	box-sizing: border-box;
+	-webkit-user-select: none;
 	user-select: none;
-	outline: 0;
+	outline: none !important;
+	touch-action: none;
+	-webkit-tap-highlight-color: transparent;
 }
 
 /* Remove default margin */
@@ -79,7 +82,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: flex-end;
-	background: linear-gradient(0deg, var(--bg) 0%, #060606 100%);
+	background: linear-gradient(0deg, var(--bg) 0%, #000 100%);
 }
 
 small {

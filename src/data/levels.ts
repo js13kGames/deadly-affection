@@ -16,7 +16,7 @@ export const Rotation270 = 3;
 export type LevelSize = [number, number];
 export type EntityType = typeof EntityBlock | typeof EntityStart | typeof EntityEnd | typeof EntityTurnOneSide | typeof EntityTurnBothSides | typeof EntitySplit | typeof EntityTunnel | typeof EntityCollectable;
 export type Rotation = typeof Rotation0 | typeof Rotation90 | typeof Rotation180 | typeof Rotation270;
-export type Entity = [EntityType, Rotation] | undefined;
+export type Entity = [EntityType, Rotation, (Rotation | null)[]?] | undefined;
 
 
 export type Level = [LevelSize, Entity[]];
@@ -29,7 +29,7 @@ export const levels: Level[] = [
 		[
 			Empty, [EntityEnd, Rotation0], Empty,
 			Empty, Empty, Empty,
-			Empty, [EntityStart, Rotation270], Empty,
+			Empty, [EntityStart, Rotation0, [Rotation270]], Empty,
 		],
 	],
 	[
@@ -37,7 +37,7 @@ export const levels: Level[] = [
 		[
 			[EntityEnd, Rotation0], Empty, [EntityTurnOneSide, Rotation90],
 			Empty, Empty, Empty,
-			Empty, Empty, [EntityStart, Rotation270],
+			Empty, Empty, [EntityStart, Rotation0, [Rotation270]],
 		],
 	],
 	[
@@ -47,7 +47,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty,
 			[EntityCollectable, Rotation0], Empty, Empty,
 			Empty, Empty, Empty,
-			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -55,9 +55,9 @@ export const levels: Level[] = [
 		[
 			[EntityEnd, Rotation0], Empty, [EntityTurnOneSide, Rotation270],
 			Empty, Empty, Empty,
+			[EntityEnd, Rotation0], Empty, [EntityStart, Rotation0, [Rotation0]],
 			[EntityCollectable, Rotation0], Empty, Empty,
-			[EntityCollectable, Rotation0], Empty, Empty,
-			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0, [Rotation0, Rotation180]],
 		],
 	],
 	[
@@ -65,7 +65,7 @@ export const levels: Level[] = [
 		[
 			Empty, [EntityEnd, Rotation0], Empty,
 			Empty, Empty, Empty,
-			Empty, [EntityStart, Rotation0], Empty,
+			Empty, [EntityStart, Rotation0, [Rotation0]], Empty,
 		],
 	],
 	[
@@ -73,7 +73,7 @@ export const levels: Level[] = [
 		[
 			[EntityEnd, Rotation0], Empty, Empty,
 			Empty, Empty, Empty,
-			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -83,7 +83,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty,
 			[EntityCollectable, Rotation0], Empty, Empty,
 			Empty, Empty, Empty,
-			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -93,7 +93,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty,
 			[EntityCollectable, Rotation0], Empty, [EntityCollectable, Rotation0],
 			[EntityCollectable, Rotation0], Empty, Empty,
-			[EntityTurnOneSide, Rotation90], [EntityCollectable, Rotation0], [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], [EntityCollectable, Rotation0], [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -101,7 +101,7 @@ export const levels: Level[] = [
 		[
 			Empty, [EntityEnd, Rotation0], Empty,
 			Empty, Empty, Empty,
-			Empty, [EntityStart, Rotation0], Empty,
+			Empty, [EntityStart, Rotation0, [Rotation0]], Empty,
 		],
 	],
 	[
@@ -109,7 +109,7 @@ export const levels: Level[] = [
 		[
 			[EntityEnd, Rotation0], Empty, Empty,
 			Empty, Empty, Empty,
-			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -119,7 +119,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty,
 			[EntityCollectable, Rotation0], Empty, Empty,
 			Empty, Empty, Empty,
-			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -129,7 +129,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty,
 			[EntityTurnOneSide, Rotation270], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
 			[EntityCollectable, Rotation0], Empty, [EntityTunnel, Rotation0],
-			[EntityTurnOneSide, Rotation90], [EntityBlock, Rotation0], [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], [EntityBlock, Rotation0], [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -144,7 +144,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty, [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
 			[EntityTurnOneSide, Rotation270], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
 			[EntityCollectable, Rotation0], Empty, [EntityTunnel, Rotation0], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
-			[EntityTurnOneSide, Rotation90], [EntityBlock, Rotation0], [EntityStart, Rotation0], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
+			[EntityTurnOneSide, Rotation90], [EntityBlock, Rotation0], [EntityStart, Rotation0, [Rotation0]], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
 		],
 	],
 	[
@@ -152,7 +152,7 @@ export const levels: Level[] = [
 		[
 			Empty, [EntityEnd, Rotation0], Empty,
 			Empty, Empty, Empty,
-			Empty, [EntityStart, Rotation0], Empty,
+			Empty, [EntityStart, Rotation0, [Rotation0]], Empty,
 		],
 	],
 	[
@@ -160,7 +160,7 @@ export const levels: Level[] = [
 		[
 			[EntityEnd, Rotation0], Empty, Empty,
 			Empty, Empty, Empty,
-			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -170,7 +170,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty,
 			[EntityCollectable, Rotation0], Empty, Empty,
 			Empty, Empty, Empty,
-			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -180,7 +180,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty,
 			[EntityTurnOneSide, Rotation270], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
 			[EntityCollectable, Rotation0], Empty, [EntityTunnel, Rotation0],
-			[EntityTurnOneSide, Rotation90], [EntityBlock, Rotation0], [EntityStart, Rotation0],
+			[EntityTurnOneSide, Rotation90], [EntityBlock, Rotation0], [EntityStart, Rotation0, [Rotation0]],
 		],
 	],
 	[
@@ -195,7 +195,7 @@ export const levels: Level[] = [
 			Empty, Empty, Empty, [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
 			[EntityTurnOneSide, Rotation270], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
 			[EntityCollectable, Rotation0], Empty, [EntityTunnel, Rotation0], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
-			[EntityTurnOneSide, Rotation90], [EntityBlock, Rotation0], [EntityStart, Rotation0], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
+			[EntityTurnOneSide, Rotation90], [EntityBlock, Rotation0], [EntityStart, Rotation0, [Rotation0]], [EntityTurnBothSides, Rotation0], [EntitySplit, Rotation0],
 		],
 	],
 ];

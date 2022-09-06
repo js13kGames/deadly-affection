@@ -52,7 +52,7 @@ export function playLevel(level: number) {
 	const widthPadding = (300 - (cellSize - cellMargin) * boardWidth) / 2;
 	const heightPadding = 0; // (400 - (cellSize - cellMargin) * boardHeight) / 2;
 
-	let startCell;
+	let startCells = [];
 
 	for (let i = 0; i < currentLevel[1].length; i += 1) {
 		const x = i % boardWidth;
@@ -62,7 +62,7 @@ export function playLevel(level: number) {
 		cells[x + '-' + y] = createEntity(cell, x + '-' + y);
 
 		if (cell?.[0] === EntityStart) {
-			startCell = x + '-' + y;
+			startCells.push(x + '-' + y);
 		}
 
 		const cellValue = cells[x + '-' + y];
@@ -110,10 +110,10 @@ export function playLevel(level: number) {
 		cells[x + '-' + y].neighbors = getNeighboringCells(x, y);
 	}
 
-	if (startCell) {
-		cells[startCell].interact('add');
-		processPuzzleProgress();
-	}
+	startCells.forEach((cellKey) => {
+		cells[cellKey].interact('add');
+	});
+	processPuzzleProgress();
 
 	state.screen = 'game';
 	state.level = level;
@@ -123,7 +123,7 @@ function createEntity(entity: Entity, cellKey: string) {
 	if (entity) {
 		const classObject = entities[entity[0]];
 		if (classObject != null) {
-			return new classObject(entity[1], cellKey);
+			return new classObject(entity[1], cellKey, entity[2]);
 		}
 	}
 
@@ -149,9 +149,9 @@ function setCellSizeAndPosition(cellElement: HTMLElement, size: number, bottom: 
 export function processPuzzleProgress() {
 	const cellValues = Object.values(cells);
 	
-	const end = cellValues.find(cell => cell.name === 'end');
+	const ends = cellValues.filter(cell => cell.name === 'end');
 
-	if (end?.isActive()) {
+	if (ends.every(end => end.isActive())) {
 		cellValues.forEach(cell => cell.cellElement.style.pointerEvents = 'none')
 		const collectables = cellValues.filter(cell => cell.name === 'collectable');
 
