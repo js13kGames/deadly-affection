@@ -1,9 +1,12 @@
-import { initGame } from './systems/game';
+import { initGame, gameContainer } from './systems/game';
 import { initGameState, saveState, state } from './systems/state';
 import { initMusic } from './components/music';
 import { initNEAR } from './systems/near';
 import { initCoil } from './systems/coil';
 import { playLevel } from './systems/play';
+import { el, mount } from './helpers/redom';
+import { getSVGElement } from './helpers/utilities';
+import { SVGs } from './helpers/svgs';
 
 window.addEventListener('DOMContentLoaded', () => {
 	initGameState();
@@ -14,11 +17,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	playLevel(state.level);
 
-	if (state.arcadian.image != '') {
-		document.documentElement.style.setProperty('--bg', state.arcadian.bg);
-		document.documentElement.style.setProperty('--color', state.arcadian.color);
-		document.documentElement.style.setProperty('--shadow', state.arcadian.shadow);
-	}
+	let fireflyColor = '#8be9ff';
 
 	let canvas = document.getElementById('canvas') as HTMLCanvasElement;
 
@@ -50,7 +49,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					if (c) {
 						c.beginPath();
 						c.arc(this.x,this.y,this.s,0,2*Math.PI);
-						c.fillStyle = state?.arcadian?.color != '' ? state.arcadian.color : "#8be9ff";
+						c.fillStyle = fireflyColor;
 						c.fill();
 					}
 				}
@@ -93,6 +92,77 @@ window.addEventListener('DOMContentLoaded', () => {
 			setInterval(loop, 1000 / 30);	
 		}
 	}
+
+	let introInProgress = true;
+
+	function revealIntro(element: HTMLElement) {
+		if (introInProgress) {
+			element.style.opacity = '1';
+			element.style.transform = 'translateY(0)';
+		}
+	}
+
+	function completeIntro() {
+		if (introInProgress) {
+			if (state.arcadian.image != '') {
+				document.documentElement.style.setProperty('--bg', state.arcadian.bg);
+				document.documentElement.style.setProperty('--color', state.arcadian.color);
+				document.documentElement.style.setProperty('--shadow', state.arcadian.shadow);
+				fireflyColor = state.arcadian.color;
+			}
+	
+			intro.style.opacity = '0';
+			intro.style.pointerEvents = 'none';
+			gameContainer.style.opacity = '1';
+		}
+	}
+
+	const necromancer = getSVGElement(SVGs.necromancer);
+	necromancer.classList.add('necromancer');
+	const death = el('h1.death', 'DEATH');
+	const isJustABeginning = el('b', 'is just a beginning');
+	const ofEternal = el('b', 'of eternal');
+	const love = el('h1.love', 'LOVE');
+
+	const fairy = getSVGElement(SVGs.fairy);
+	fairy.classList.add('fairy');
+	const hearts = el('div', [
+		getSVGElement(SVGs.hearts),
+		getSVGElement(SVGs.hearts),
+		fairy,
+		getSVGElement(SVGs.hearts),
+		getSVGElement(SVGs.hearts),
+	]);
+	const skip = el('small', 'tap to skip');
+
+	const intro = el('div.intro', [
+		necromancer,
+		death,
+		isJustABeginning,
+		ofEternal,
+		love,
+		hearts,
+		skip,
+	]);
+
+	intro.onclick = completeIntro;
+
+	revealIntro(skip);
+
+	setTimeout(() => { revealIntro(death) }, 500);
+	setTimeout(() => { revealIntro(isJustABeginning) }, 2000);
+	setTimeout(() => { revealIntro(ofEternal) }, 3500);
+	setTimeout(() => {
+		revealIntro(love);
+		if (introInProgress) {
+			document.documentElement.style.setProperty('--bg', '#442828');
+			fireflyColor = '#fa7c7c';
+		}
+	}, 5000);
+	setTimeout(() => { revealIntro(hearts) }, 5000);
+	setTimeout(completeIntro, 10000);
+
+	mount(document.body, intro);
 });
 
 window.addEventListener('beforeunload', function () {
