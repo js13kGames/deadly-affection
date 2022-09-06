@@ -104,15 +104,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	function completeIntro() {
 		if (introInProgress) {
+			introInProgress = false;
 			if (state.arcadian.image != '') {
 				document.documentElement.style.setProperty('--bg', state.arcadian.bg);
 				document.documentElement.style.setProperty('--color', state.arcadian.color);
 				document.documentElement.style.setProperty('--shadow', state.arcadian.shadow);
 				fireflyColor = state.arcadian.color;
+			} else {
+				document.documentElement.style.setProperty('--bg', '#03182b');
+				fireflyColor = '#8be9ff';
 			}
 	
 			intro.style.opacity = '0';
 			intro.style.pointerEvents = 'none';
+			intro2.style.opacity = '0';
+			intro2.style.pointerEvents = 'none';
 			gameContainer.style.opacity = '1';
 		}
 	}
@@ -145,7 +151,23 @@ window.addEventListener('DOMContentLoaded', () => {
 		skip,
 	]);
 
+	const heart = getSVGElement(SVGs.hearts);
+	heart.classList.add('heart1')
+	const fairy2 = fairy.cloneNode(true) as HTMLElement;
+	const intro2 = el('div.intro2', [
+		el('div', [
+			necromancer.cloneNode(true) as HTMLElement,
+			heart,
+			fairy2,
+		]),
+		el('h1.death', 'Deadly'),
+		el('h1.love', 'Connections'),
+		el('small', 'tap to play'),
+	]);
+	intro2.style.opacity = '0';
+
 	intro.onclick = completeIntro;
+	intro2.onclick = completeIntro;
 
 	revealIntro(skip);
 
@@ -160,9 +182,25 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	}, 5000);
 	setTimeout(() => { revealIntro(hearts) }, 5000);
-	setTimeout(completeIntro, 10000);
+	setTimeout(() => { 
+		if (introInProgress) {
+			intro.style.opacity = '0'
+		} 
+	}, 8000);
+	setTimeout(() => { 
+		if (introInProgress) {
+			intro2.style.opacity = '1'
+		} 
+	}, 8000);
+	setTimeout(() => { 
+		if (introInProgress) {
+			fairy2.classList.add('active')
+		} 
+	}, 9000);
+	// setTimeout(completeIntro, 10000);
 
 	mount(document.body, intro);
+	mount(document.body, intro2);
 });
 
 window.addEventListener('beforeunload', function () {
