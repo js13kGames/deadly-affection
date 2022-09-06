@@ -429,6 +429,7 @@ button.primary {
     height: 100%;
 	pointer-events: none;
 	transition: none;
+	border-radius: 2px;
 }
 
 .cell {
