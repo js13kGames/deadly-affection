@@ -231,13 +231,18 @@ svg {
 
 button {
 	margin: 0 0.5rem;
-	border: 1px solid #666;
-    background-color: #333;
+	border: 1px solid var(--color);
+    background-color: var(--bg);
 	padding: 2px 10px 4px;
 	font-size: 0.75rem;
 	border-radius: 4px;
 	color: #fff;
 	cursor: pointer;
+	filter: brightness(0.5);
+}
+
+button:hover {
+	transform: scale(1.1);
 }
 
 button.disabled {
@@ -246,13 +251,15 @@ button.disabled {
 }
 
 button.danger {
-	background-color: rgb(158, 0, 0);
-	border-color: #ff0000;
+	background-color: var(--bg);
+	border-color: var(--color);
+	filter: hue-rotate(90deg);
 }
 
 button.primary {
-	background-color: rgb(0, 69, 158);
-	border-color: #006fff;
+	background-color: var(--bg);
+	border-color: var(--color);
+	filter: none;
 }
 
 .modal {
@@ -281,9 +288,9 @@ button.primary {
 	margin: 2rem;
 	padding: 1rem;
 	z-index: 102;
-	background-color: #111;
-	border: 2px solid #333;
-	box-shadow: 0 0 5px #000;
+	background-color: var(--bg);
+	border: 2px solid var(--color);
+	box-shadow: 0 0 5px var(--shadow);
 	border-radius: 4px;
 	text-align: center;
 	flex-direction: column;
@@ -344,27 +351,23 @@ button.primary {
 	cursor: pointer;
 	justify-content: flex-end;
 	border-radius: 5px;
-	border: 2px solid #666;
-    box-shadow: 0 1px 3px #000, 0 2px 6px #000, 0 3px 9px #000;
+	border: 2px solid var(--color);
+	background: var(--bg);
+	box-shadow: 0 1px 3px var(--shadow), 0 2px 6px var(--shadow), 0 3px 9px var(--shadow);
+	filter: grayscale(0.75) brightness(0.75);
 }
 
 .level.locked, .level.locked:hover {
-	background: #111;
-	border: 2px solid #333;
-    box-shadow: 0 1px 3px #000, 0 2px 6px #000, 0 3px 9px #000;
+	filter: grayscale(1) brightness(0.75);
 }
 
 .level.done, .level.done:hover {
-	border-color: #498f39;
-	background: #052c07;
-	box-shadow: 0 1px 3px #052c07, 0 2px 6px #052c07, 0 3px 9px #052c07;
+	filter: grayscale(0) brightness(0.75);
 }
 
 .level:hover {
 	transform: scale(1.05);
-	border-color: #4d85b9;
-	background: #05192c;
-	box-shadow: 0 1px 3px #05192c, 0 2px 6px #05192c, 0 3px 9px #05192c;
+	filter: grayscale(0) hue-rotate(90deg);
 }
 
 .level b {
@@ -382,18 +385,17 @@ button.primary {
 	width: 17px;
     height: 17px;
     margin: 1px;
-	fill: #222;
-	filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 4px #000);
+	fill: var(--color);
+	filter: drop-shadow(0 0 2px var(--shadow)) drop-shadow(0 0 4px var(--shadow)) brightness(0.5);
 }
 
-.done .hearts svg {
+/* .done .hearts svg {
 	fill: #052c07;
 	filter: drop-shadow(0 0 2px #498f39) drop-shadow(0 0 4px #498f39);
-}
+} */
 
 .hearts svg.done {
-	fill: #860000;
-	filter: drop-shadow(0 0 2px #498f39) drop-shadow(0 0 4px #498f39);
+	filter: drop-shadow(0 0 2px var(--shadow)) drop-shadow(0 0 4px var(--shadow)) brightness(1);
 }
 
 .modal-container .hearts {
@@ -404,13 +406,13 @@ button.primary {
 	width: 40px;
 	height: 40px;
 	transform: scale(0.5);
-	filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 4px #000);
+	filter: grayscale(0.75);
 	transition: all 500ms cubic-bezier(0.3, 0.53, 0.08, 2);
 }
 
 .modal-container .hearts svg.done {
 	transform: scale(1);
-	filter: drop-shadow(0 0 2px #490606) drop-shadow(0 0 4px #490606);
+	filter: drop-shadow(0 0 2px var(--shadow)) drop-shadow(0 0 4px var(--shadow));
 }
 
 .game-screen {
@@ -423,11 +425,25 @@ button.primary {
 	position: absolute;
 	z-index: 4;
 	pointer-events: none;
+	fill: var(--bg);
+	stroke: var(--color);
+	filter: grayscale(0.75);
+}
+
+#rect25408 {
+	fill: var(--color);
+}
+
+.game-screen .active-output svg,
+.game-screen svg.active-output,
+.game-screen svg.block.active {
+	filter: grayscale(0) drop-shadow(0 0 1px var(--shadow)) drop-shadow(0 0 2px var(--shadow));
+	transform: scale(1.5);
 }
 
 .game-screen img {
-	width: 100%;
-    height: 100%;
+	width: 105%;
+    height: 105%;
 	pointer-events: none;
 	transition: none;
 	border-radius: 2px;
@@ -439,13 +455,23 @@ button.primary {
 
 .cell.start {
 	background: var(--bg);
-	box-shadow: 0 0 3px var(--shadow), 0 0 6px var(--shadow), 0 0 9px var(--shadow);
+	box-shadow: 0 0 0 2px var(--color), 0 0 6px var(--shadow), 0 0 9px var(--shadow), 0 0 12px var(--shadow);
+	border: 0;
+	overflow: hidden;
 }
+
+.game-screen svg.start {
+	filter: none;
+} 
 
 .cell.end {
 	border-color: #ffc9ff;
 	background: #2a132a;
 	box-shadow: 0 0 3px #553555, 0 0 6px #553555, 0 0 9px #553555;
+}
+
+.game-screen .end {
+	filter: none;
 }
 
 .end.active {
@@ -471,6 +497,7 @@ button.primary {
 .line {
 	background: var(--color);
 	box-shadow: 0 0 3px var(--shadow), 0 0 6px var(--shadow), 0 0 9px var(--shadow);
+	border-radius: 1px;
 	position: absolute;
 	z-index: 2;
 	pointer-events: none;
@@ -479,16 +506,23 @@ button.primary {
 }
 
 .collectable {
-	fill: #222;
-	transform: scale(0.5)!important;
-	filter: drop-shadow(0 0 2px #000) drop-shadow(0 0 4px #000);
+	transform: scale(0.75)!important;
+	filter: drop-shadow(0 0 2px var(--shadow)) drop-shadow(0 0 4px var(--shadow));
 	transition: all 500ms cubic-bezier(0.3, 0.53, 0.08, 2);
 }
 
 .collectable.active {
-	fill: #CB0A08;
 	transform: scale(0.75)!important;
-	filter: drop-shadow(0 0 2px #490606) drop-shadow(0 0 4px #490606);
+	filter: drop-shadow(0 0 2px var(--shadow)) drop-shadow(0 0 4px var(--shadow));
+}
+
+.collectable svg {
+	filter: none;
+}
+
+.collectable.active svg {
+	fill: var(--color);
+	stroke: var(--shadow);
 }
 
 b.sep {

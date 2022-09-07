@@ -227,9 +227,9 @@ export async function openArcadiaScreen() {
 			images[i].onload = () => {
 				const colorValues = getAverageRGB(images[i]);
 
-				const bg = 'rgb(' + (Math.max(0, colorValues.r - 130)) + ',' + (Math.max(0, colorValues.g - 130)) + ',' + (Math.max(0, colorValues.b - 130)) + ')';
-				const color = 'rgb(' + (Math.min(255, colorValues.r + 75)) + ',' + (Math.min(255, colorValues.g + 75)) + ',' + (Math.min(255, colorValues.b + 75)) + ')';
-				const shadow = 'rgb(' + (Math.min(255, colorValues.r + 25)) + ',' + (Math.min(255, colorValues.g + 25)) + ',' + (Math.min(255, colorValues.b + 25)) + ')';
+				const bg = 'rgb(' + (Math.max(0, colorValues.r * 0.25)) + ',' + (Math.max(0, colorValues.g * 0.25)) + ',' + (Math.max(0, colorValues.b * 0.25)) + ')';
+				const color = 'rgb(' + (Math.min(255, colorValues.r * 1.5)) + ',' + (Math.min(255, colorValues.g * 1.5)) + ',' + (Math.min(255, colorValues.b * 1.5)) + ')';
+				const shadow = 'rgb(' + (Math.min(255, colorValues.r * 1.2)) + ',' + (Math.min(255, colorValues.g * 1.2)) + ',' + (Math.min(255, colorValues.b * 1.2)) + ')';
 
 				images[i].style.borderColor = color;
 				images[i].style.boxShadow = '0 0 3px ' + shadow + ', 0 0 6px ' + shadow + ', 0 0 9px ' + shadow;

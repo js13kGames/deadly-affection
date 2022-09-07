@@ -134,12 +134,14 @@ export class Base {
 
 		this.cellElement.classList.toggle('active', this.isActive());
 		this.iconElement.classList.toggle('active', this.isActive());
+		this.cellElement.classList.toggle('active-output', this.isActiveOutput());
+		this.iconElement.classList.toggle('active-output', this.isActiveOutput());
 	}
 
 	addLine(direction: 0 | 1 | 2 | 3) {
 		const line = el('div.line');
 
-		const lineLength = this.distanceToCenter * 2.8;
+		const lineLength = this.distanceToCenter * 2.75;
 
 		line.style.width = '2px';
 		line.style.height = lineLength + 'px';
@@ -186,5 +188,9 @@ export class Base {
 
 	isActive() {
 		return this.inputs.some(input => input);
+	}
+
+	isActiveOutput() {
+		return this.outputs.some(output => output);
 	}
 }
