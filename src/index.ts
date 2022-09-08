@@ -54,9 +54,9 @@ window.addEventListener('DOMContentLoaded', () => {
 					}
 				}
 			}
-			
+
 			let f: firefly[] = [];
-			
+
 			function draw() {
 				if(f.length < 100){
 				for(let j = 0; j < 10; j++){
@@ -72,8 +72,8 @@ window.addEventListener('DOMContentLoaded', () => {
 					}
 				}
 			}
-				
-		
+
+
 			function loop() {
 				// window.requestAnimFrame(loop);
 				if (c) {
@@ -81,15 +81,15 @@ window.addEventListener('DOMContentLoaded', () => {
 				}
 				draw();
 			}
-			
+
 			window.addEventListener("resize", function() {
 				(w = canvas.width = window.innerWidth),
 				(h = canvas.height = window.innerHeight);
 				loop();
 			});
-			
+
 			loop();
-			setInterval(loop, 1000 / 30);	
+			setInterval(loop, 1000 / 30);
 		}
 	}
 
@@ -114,7 +114,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				document.documentElement.style.setProperty('--bg', '#03182b');
 				fireflyColor = '#8be9ff';
 			}
-	
+
 			intro.style.opacity = '0';
 			intro.style.pointerEvents = 'none';
 			intro2.style.opacity = '0';
@@ -161,7 +161,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			fairy2,
 		]),
 		el('h1.death', 'Deadly'),
-		el('h1.love', 'Connections'),
+		el('h1.love', 'Affection'),
 		el('small', 'tap to play'),
 	]);
 	intro2.style.opacity = '0';
@@ -182,20 +182,20 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	}, 5000);
 	setTimeout(() => { revealIntro(hearts) }, 5000);
-	setTimeout(() => { 
+	setTimeout(() => {
 		if (introInProgress) {
 			intro.style.opacity = '0'
-		} 
+		}
 	}, 8000);
-	setTimeout(() => { 
+	setTimeout(() => {
 		if (introInProgress) {
 			intro2.style.opacity = '1'
-		} 
+		}
 	}, 8000);
-	setTimeout(() => { 
+	setTimeout(() => {
 		if (introInProgress) {
 			fairy2.classList.add('active')
-		} 
+		}
 	}, 9000);
 	// setTimeout(completeIntro, 10000);
 

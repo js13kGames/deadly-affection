@@ -217,7 +217,7 @@ export async function openArcadiaScreen() {
 
 		if (arcadian?.image) {
 			let blob = await fetch(arcadian.image).then(r => r.blob());
-			let dataUrl: string = await new Promise(resolve => 
+			let dataUrl: string = await new Promise(resolve =>
 			{
 				let reader = new FileReader();
 				reader.onload = () => resolve(reader.result as string);
@@ -235,7 +235,7 @@ export async function openArcadiaScreen() {
 				images[i].style.boxShadow = '0 0 3px ' + shadow + ', 0 0 6px ' + shadow + ', 0 0 9px ' + shadow;
 
 				images[i].classList.add('active');
-				
+
 				images[i].onclick = () => {
 					state.arcadian = {
 						bg,
@@ -264,7 +264,7 @@ export function initGame() {
 	gameContainer = el('div.game');
 
 	new LinkSetting(gameContainer, SVGs.discord, '#5865F2', 4, 360, 'https://discord.gg/kPf8XwNuZT');
-	new LinkSetting(gameContainer, SVGs.coffee, '#FBAA19', 40, 360, 'https://ko-fi.com/martintale?ref=deadly-connection');
+	new LinkSetting(gameContainer, SVGs.coffee, '#FBAA19', 40, 360, 'https://ko-fi.com/martintale?ref=deadly-affection');
 
 	new LinkSetting(gameContainer, SVGs.near, '#FFFFFF', 82, 360, openNearScreen);
 	new LinkSetting(gameContainer, SVGs.coil, '#FFFFFF', 118, 360, openCoilScreen);
@@ -277,7 +277,7 @@ export function initGame() {
 		settingTop = 76
 	}
 	new ToggleSetting(gameContainer, SVGs.levels, 'screen', settingTop, 4);
-	
+
 	screens = new Screens(gameContainer, {
 		levels: createLevelsScreen(),
 		game: createGameScreen(),

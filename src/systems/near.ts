@@ -13,7 +13,7 @@ export let nearConnection: any;
 export let walletConnection: any;
 
 export async function initNEAR() {
-	const userKeyStore = new window.nearApi.keyStores.BrowserLocalStorageKeyStore(localStorage, 'deadly-connection_')
+	const userKeyStore = new window.nearApi.keyStores.BrowserLocalStorageKeyStore(localStorage, 'deadly-affection_')
 
 	const connectionConfig = {
 		networkId: "testnet",
@@ -27,7 +27,7 @@ export async function initNEAR() {
 
 	nearConnection = await window.nearApi.connect(connectionConfig);
 
-	walletConnection = new window.nearApi.WalletConnection(nearConnection, 'deadly-connection_');
+	walletConnection = new window.nearApi.WalletConnection(nearConnection, 'deadly-affection_');
 
 	if (isLoggedInWithNEAR()) {
 		const items = await getBoughtItems();

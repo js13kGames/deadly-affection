@@ -1,6 +1,6 @@
 import { createStateObserver } from '../helpers/observers';
 
-const localStorageKey = 'deadly-connection';
+const localStorageKey = 'deadly-affection';
 
 export type Screen = 'game' | 'levels';
 export type Setting = 'sound' | 'fullscreen' | 'screen';
