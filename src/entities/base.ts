@@ -71,8 +71,6 @@ export class Base {
 	}
 
 	interact(action: 'add' | 'remove', from?: number) {
-		// console.warn(action, from);
-
 		if (action === 'remove' && from != null) {
 			if (this.inputs[from] === false) {
 				return;
@@ -89,10 +87,13 @@ export class Base {
 			this.inputs[from] = true;
 		}
 
+		// console.warn(this.name, this.cellKey, action, from);
+
 		const newOutputs: [boolean, boolean, boolean, boolean] = [false, false, false, false];
 
 		// console.log('inputs', this.inputs);
 		// console.log('paths', this.paths);
+		
 		for (let i = 0; i < this.inputs.length; i += 1) {
 			if (this.inputs[i] === true) {
 				const path = this.paths[i];
@@ -107,8 +108,6 @@ export class Base {
 			}
 		}
 
-		// this.logState(newOutputs);
-
 		for (let i = 0; i < this.outputs.length; i += 1) {
 			const oldOutput = this.outputs[i];
 			const newOutput = newOutputs[i];
@@ -118,7 +117,7 @@ export class Base {
 
 				this.removeLine(i as 0 | 1 | 2 | 3);
 
-				if (this.neighbors[i]) {
+				if (this.neighbors[i] && this.neighbors[i].outputs[(i + 2) % 4] === false) {
 					this.neighbors[i].interact('remove', (i + 2) % 4);
 				}
 			} else if (oldOutput === false && newOutput === true) {
