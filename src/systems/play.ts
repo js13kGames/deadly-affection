@@ -67,7 +67,7 @@ export function playLevel(level: number) {
 
 		const cellValue = cells[x + '-' + y];
 
-		const bottom = 20 + heightPadding + (boardHeight - y) + (boardHeight - y - 1) * cellSize;
+		const bottom = 50 + heightPadding + (boardHeight - y) + (boardHeight - y - 1) * cellSize;
 		const left = 50 + widthPadding + x * cellSize;
 
 		cells[x + '-' + y].bottom = bottom;
@@ -147,6 +147,8 @@ function setCellSizeAndPosition(cellElement: HTMLElement, size: number, bottom: 
 }
 
 export function processPuzzleProgress() {
+	updateTutorial();
+
 	const cellValues = Object.values(cells);
 	
 	const ends = cellValues.filter(cell => cell.name === 'end');
@@ -226,4 +228,18 @@ export function processPuzzleProgress() {
 			}
 		}, 1000);
 	}
+}
+
+function updateTutorial() {
+	if (state.level !== 0) {
+		return;
+	}
+
+	const firstCell = cells['0-4'];
+	const firstElementIncorrect = firstCell.outputs[0] === false;
+	firstCell.cellElement.classList.toggle('tutorial', firstElementIncorrect);
+
+	const secondCell = cells['0-0'];
+	const secondElementIncorrect = firstElementIncorrect === false && secondCell.outputs[1] === false;
+	secondCell.cellElement.classList.toggle('tutorial', secondElementIncorrect);
 }

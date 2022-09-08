@@ -681,6 +681,10 @@ b.sep:after {
 	animation: grow 750ms linear infinite;
 }
 
+.tutorial {
+	animation: grow 750ms linear infinite;
+}
+
 @keyframes grow { 
 	0% { 
         transform: scale(1);
