@@ -23,7 +23,7 @@ body {
 	padding: 0;
 	overscroll-behavior-y: none;
 	position: fixed;
-  	overflow: hidden;
+	overflow: hidden;
 }
 
 /* Box sizing rules */
@@ -91,7 +91,7 @@ small {
 	line-height: 1;
 	font-size: 0.75rem;
 	text-align: right;
-    font-family: monospace;
+	font-family: monospace;
 }
 
 h1 {
@@ -232,7 +232,7 @@ svg {
 button {
 	margin: 0 0.5rem;
 	border: 1px solid var(--color);
-    background-color: var(--bg);
+	background-color: var(--bg);
 	padding: 2px 10px 4px;
 	font-size: 0.75rem;
 	border-radius: 4px;
@@ -323,16 +323,6 @@ button.primary {
 	margin-right: 0;
 }
 
-.particles {
-	position: absolute;
-}
-
-.particle {
-	border-radius: 100%;
-	position: absolute;
-	transition: none;
-}
-
 .levels-screen {
 	align-items: end;
 	flex-direction: row;
@@ -357,11 +347,13 @@ button.primary {
 	filter: grayscale(0.75) brightness(0.75);
 }
 
-.level.locked, .level.locked:hover {
+.level.locked,
+.level.locked:hover {
 	filter: grayscale(1) brightness(0.75);
 }
 
-.level.done, .level.done:hover {
+.level.done,
+.level.done:hover {
 	filter: grayscale(0) brightness(0.75);
 }
 
@@ -372,7 +364,7 @@ button.primary {
 
 .level b {
 	margin: 3px;
-    font-size: 1.5rem;
+	font-size: 1.5rem;
 }
 
 .hearts {
@@ -383,8 +375,8 @@ button.primary {
 
 .hearts svg {
 	width: 17px;
-    height: 17px;
-    margin: 1px;
+	height: 17px;
+	margin: 1px;
 	fill: var(--color);
 	filter: drop-shadow(0 0 2px var(--shadow)) drop-shadow(0 0 4px var(--shadow)) brightness(0.5);
 }
@@ -443,7 +435,7 @@ button.primary {
 
 .game-screen img {
 	width: 105%;
-    height: 105%;
+	height: 105%;
 	pointer-events: none;
 	transition: none;
 	border-radius: 2px;
@@ -462,7 +454,7 @@ button.primary {
 
 .game-screen svg.start {
 	filter: none;
-} 
+}
 
 .cell.end {
 	border-color: #ffc9ff;
@@ -479,7 +471,8 @@ button.primary {
 	transform: rotate(180deg);
 }
 
-.cell, .empty {
+.cell,
+.empty {
 	transform-origin: center;
 	position: absolute;
 	cursor: pointer;
@@ -506,13 +499,13 @@ button.primary {
 }
 
 .collectable {
-	transform: scale(0.75)!important;
+	transform: scale(0.75) !important;
 	filter: drop-shadow(0 0 2px var(--shadow)) drop-shadow(0 0 4px var(--shadow));
 	transition: all 500ms cubic-bezier(0.3, 0.53, 0.08, 2);
 }
 
 .collectable.active {
-	transform: scale(0.75)!important;
+	transform: scale(0.75) !important;
 	filter: drop-shadow(0 0 2px var(--shadow)) drop-shadow(0 0 4px var(--shadow));
 }
 
@@ -535,7 +528,7 @@ b.sep {
 b.sep:before,
 b.sep:after {
 	background-color: #333;
-	content: "";
+	content: '';
 	display: inline-block;
 	height: 1px;
 	position: relative;
@@ -561,7 +554,7 @@ b.sep:after {
 	width: 80px;
 	height: 80px;
 	margin: 10px;
-    border: 2px solid #fff;
+	border: 2px solid #fff;
 	cursor: pointer;
 	border-radius: 5px;
 	transform: scale(0.25);
@@ -576,23 +569,24 @@ b.sep:after {
 
 #canvas {
 	position: fixed;
-    z-index: 0;
+	z-index: 0;
 	filter: blur(1px);
 	pointer-events: none;
 }
 
-@keyframes spin { 
-	100% { 
-        rotate: 360deg;
-    }
+@keyframes spin {
+	100% {
+		rotate: 360deg;
+	}
 }
 
-.intro, .intro2 {
+.intro,
+.intro2 {
 	position: fixed;
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-    text-align: center;
+	width: 100%;
+	height: 100%;
+	flex-direction: column;
+	text-align: center;
 	cursor: pointer;
 	transition: all 1s;
 }
@@ -633,7 +627,8 @@ b.sep:after {
 	animation: none;
 }
 
-.intro small, .intro2 small {
+.intro small,
+.intro2 small {
 	position: fixed;
 	bottom: min(2vw, 2vh);
 	text-align: center;
@@ -667,8 +662,8 @@ b.sep:after {
 
 .death {
 	font-size: min(15vw, 15vh);
-    color: #1b5285;
-    text-shadow: 0 0 5px #75bcff, 0 0 10px #75bcff, 0 0 15px #75bcff;
+	color: #1b5285;
+	text-shadow: 0 0 5px #75bcff, 0 0 10px #75bcff, 0 0 15px #75bcff;
 	margin-bottom: min(-1vw, -1vh);
 	margin-top: min(-2vw, -2vh);
 }
@@ -676,7 +671,7 @@ b.sep:after {
 .love {
 	font-size: min(15vw, 15vh);
 	color: #a32020;
-    text-shadow: 0 0 5px #fa7c7c, 0 0 10px #fa7c7c, 0 0 15px #fa7c7c;
+	text-shadow: 0 0 5px #fa7c7c, 0 0 10px #fa7c7c, 0 0 15px #fa7c7c;
 	margin-top: max(-4vw, -4vh);
 	animation: grow 750ms linear infinite;
 }
@@ -685,26 +680,26 @@ b.sep:after {
 	animation: grow 750ms linear infinite;
 }
 
-@keyframes grow { 
-	0% { 
-        transform: scale(1);
-    }
-	50% { 
-        transform: scale(1.1);
-    }
-	100% { 
-        transform: scale(1);
-    }
+@keyframes grow {
+	0% {
+		transform: scale(1);
+	}
+	50% {
+		transform: scale(1.1);
+	}
+	100% {
+		transform: scale(1);
+	}
 }
 
-@keyframes shrink { 
-	0% { 
-        transform: scale(0.6);
-    }
-	50% { 
-        transform: scale(0.5);
-    }
-	100% { 
-        transform: scale(0.6);
-    }
+@keyframes shrink {
+	0% {
+		transform: scale(0.6);
+	}
+	50% {
+		transform: scale(0.5);
+	}
+	100% {
+		transform: scale(0.6);
+	}
 }
