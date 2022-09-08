@@ -438,7 +438,7 @@ button.primary {
 .game-screen svg.active-output,
 .game-screen svg.block.active {
 	filter: grayscale(0) drop-shadow(0 0 1px var(--shadow)) drop-shadow(0 0 2px var(--shadow));
-	transform: scale(1.5);
+	transform: scale(1.4);
 }
 
 .game-screen img {
