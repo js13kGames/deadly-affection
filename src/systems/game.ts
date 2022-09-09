@@ -173,7 +173,7 @@ export async function openArcadiaScreen() {
 	const arcadianContainer = el('div.arcadians'); // arcadians.length > 0 ? el(, arcadians) : el('b', 'Failed to load Arcadians :(');
 
 	openModal(gameContainer, 'Arcadia', [
-		el('p', 'Pick an Arcadian!'),
+		el('p', 'Pick an Arcadian to change the theme!'),
 		arcadianContainer,
 	], [{
 		type: 'danger',
