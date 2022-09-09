@@ -77,6 +77,10 @@ export function renderLevels() {
 			}
 		};
 
+		if (i === state.level) {
+			levelContainer.classList.add('current-level');
+		}
+
 		mount(levelScreen, levelContainer);
 
 		if (i == 11) {

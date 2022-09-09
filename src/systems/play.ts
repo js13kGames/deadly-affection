@@ -112,11 +112,24 @@ export function playLevel(level: number) {
 
 	startCells.forEach((cellKey) => {
 		cells[cellKey].interact('add');
+
+		const directions: ('top' | 'right' | 'bottom' | 'left')[] = ['top', 'right', 'bottom', 'left'];
+		cells[cellKey].outputs.forEach((output, i) => {
+			if (output) {
+				const arrow = el('div.arrow');
+				arrow.style[directions[i]] = '-7px';
+				mount(cells[cellKey].cellElement, arrow);
+			}
+		});
 	});
 	processPuzzleProgress();
 
 	state.screen = 'game';
 	state.level = level;
+
+	mount(screens.screens.game, el('b', (state.level + 1).toString()));
+
+	renderLevels();
 }
 
 function createEntity(entity: Entity, cellKey: string) {
@@ -147,8 +160,6 @@ function setCellSizeAndPosition(cellElement: HTMLElement, size: number, bottom: 
 }
 
 export function processPuzzleProgress() {
-	updateTutorial();
-
 	const cellValues = Object.values(cells);
 	
 	const ends = cellValues.filter(cell => cell.name === 'end');
@@ -189,12 +200,17 @@ export function processPuzzleProgress() {
 			},
 		];
 
-		if (state.level < levels.length - 1) {
+		const nextLevel = state.level + 1;
+		const thereAreMoreLevels = nextLevel < levels.length;
+		const lockedCoilLevels = state.coilTotal <= 0 && nextLevel >= 12 && nextLevel <= 14
+		const lockedNearLevels = !state.near && nextLevel >= 15 && nextLevel <= 17
+
+		if (thereAreMoreLevels && lockedCoilLevels === false && lockedNearLevels === false) {
 			buttons.push({
 				content: 'Next',
 				type: 'primary',
 				onClickCallback: () => {
-					playLevel(state.level + 1);
+					playLevel(nextLevel);
 					goToLevels = false;
 				}
 			});
@@ -228,18 +244,4 @@ export function processPuzzleProgress() {
 			}
 		}, 1000);
 	}
-}
-
-function updateTutorial() {
-	if (state.level !== 0) {
-		return;
-	}
-
-	const firstCell = cells['0-4'];
-	const firstElementIncorrect = firstCell.outputs[0] === false;
-	firstCell.cellElement.classList.toggle('tutorial', firstElementIncorrect);
-
-	const secondCell = cells['0-0'];
-	const secondElementIncorrect = firstElementIncorrect === false && secondCell.outputs[1] === false;
-	secondCell.cellElement.classList.toggle('tutorial', secondElementIncorrect);
 }

@@ -28,6 +28,8 @@ export class Base {
 		public withBackground = false,
 		public paths: [PathDirection, PathDirection, PathDirection, PathDirection] = [null, null, null, null],
 	) {
+		this.rotation += 10000;
+
 		this.cellElement.style.transform = 'rotate(' + (90 * this.rotation) + 'deg)';
 		for (let i = 0; i < this.rotation; i += 1) {
 			// Move first element to end of array
@@ -37,23 +39,14 @@ export class Base {
 
 		if (this.rotatable) {
 			this.cellElement.onclick = () => {
-				playSound('rotate');
-				this.rotation = this.rotation + 1;
-				this.cellElement.style.transform = 'rotate(' + (90 * this.rotation) + 'deg)';
-
-				const img = this.cellElement.querySelector('img');
-				if (img) {
-					img.style.transform = 'rotate(' + (-90 * this.rotation) + 'deg)';
-				}
-
-				// Move first element to end of array
-				const poppedpath = this.paths.pop();
-				this.paths.unshift(poppedpath != null ? poppedpath : null);
-
-				this.interact('add');
-
-				processPuzzleProgress();
+				this.rotate(-1);
 			}
+
+			this.cellElement.oncontextmenu = (ev) => {
+				ev.preventDefault();
+				this.rotate(1);
+				return false;
+			};
 		} else {
 			this.cellElement.style.pointerEvents = 'none';
 		}
@@ -68,6 +61,31 @@ export class Base {
 
 		this.cellElement.classList.toggle('active', this.isActive());
 		this.iconElement.classList.toggle('active', this.isActive());
+	}
+
+	rotate(direction: -1 | 1) {
+		playSound('rotate');
+
+		this.rotation = this.rotation + direction;
+		this.cellElement.style.transform = 'rotate(' + (90 * this.rotation) + 'deg)';
+
+		const img = this.cellElement.querySelector('img');
+		if (img) {
+			img.style.transform = 'rotate(' + (-90 * this.rotation) + 'deg)';
+		}
+
+		// Move first element to end of array and vice versa
+		if (direction === 1) {
+			const poppedpath = this.paths.pop();
+			this.paths.unshift(poppedpath != null ? poppedpath : null);
+		} else {
+			const poppedpath = this.paths.shift();
+			this.paths.push(poppedpath != null ? poppedpath : null);
+		}
+
+		this.interact('add');
+
+		processPuzzleProgress();
 	}
 
 	interact(action: 'add' | 'remove', from?: number) {

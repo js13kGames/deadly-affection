@@ -28,7 +28,7 @@ export const levels: Level[] = [
 	[
 		[3, 5],
 		[
-			[EntityTurnOneSide, Rotation0], Empty, [EntityTurnOneSide, Rotation180],
+			[EntityTurnOneSide, Rotation90], Empty, [EntityTurnOneSide, Rotation270],
 			Empty, Empty, Empty,
 			[EntityCollectable, Rotation0], Empty, [EntityEnd, Rotation0],
 			Empty, Empty, Empty,
