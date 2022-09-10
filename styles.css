@@ -532,7 +532,7 @@ b.sep {
 
 b.sep:before,
 b.sep:after {
-	background-color: #333;
+	background-color: var(--shadow);
 	content: '';
 	display: inline-block;
 	height: 1px;
@@ -553,13 +553,14 @@ b.sep:after {
 
 .arcadians {
 	flex-wrap: wrap;
+	font-size: 0.8rem;
+    color: var(--shadow);
 }
 
 .arcadians img {
-	width: 80px;
-	height: 80px;
+	width: 75px;
+	height: 75px;
 	margin: 10px;
-	border: 2px solid #fff;
 	cursor: pointer;
 	border-radius: 5px;
 	transform: scale(0.25);
@@ -717,4 +718,18 @@ b.sep:after {
 	100% {
 		transform: scale(0.6);
 	}
+}
+
+textarea {
+	width: 50%;
+    height: 50%;
+}
+
+main {
+	max-height: 400px;
+	overflow-y: auto;
+}
+
+main::-webkit-scrollbar {
+    display: none;
 }

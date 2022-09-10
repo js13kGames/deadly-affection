@@ -13,6 +13,14 @@ import { randomIntFromInterval } from '../helpers/utilities';
 import { state } from './state';
 import { playLevel } from './play';
 
+declare global {
+	interface Window{
+	  _ethers: any;
+	  ethereum: any;
+	  Moralis: any;
+	}
+  }
+
 export let gameContainer: HTMLElement;
 
 export let screens: Screens;
@@ -169,94 +177,177 @@ function getAverageRGB(imgEl: HTMLImageElement) {
 
 }
 
+function resetTheme() {
+	state.arcadian = {
+		bg: '',
+		color: '',
+		shadow: '',
+		image: '',
+	};
+
+	document.documentElement.style.setProperty('--bg', '#03182b');
+	document.documentElement.style.setProperty('--color', '#8be9ff');
+	document.documentElement.style.setProperty('--shadow', '#4f838f');
+
+	playLevel(state.level);
+	state.screen = 'game';
+}
+
+async function addArcadian(container: HTMLElement, id: string) {
+	const image = el('img') as HTMLImageElement;
+	mount(container, image);
+
+	const arcadian = await (await fetch('https://api.arcadians.io/' + id)).json();
+
+	if (arcadian?.image) {
+		let blob = await fetch(arcadian.image).then(r => r.blob());
+		let dataUrl: string = await new Promise(resolve =>
+		{
+			let reader = new FileReader();
+			reader.onload = () => resolve(reader.result as string);
+			reader.readAsDataURL(blob);
+		});
+
+		image.onload = () => {
+			const colorValues = getAverageRGB(image);
+
+			const bg = 'rgb(' + (Math.max(0, colorValues.r * 0.25)) + ',' + (Math.max(0, colorValues.g * 0.25)) + ',' + (Math.max(0, colorValues.b * 0.25)) + ')';
+			const color = 'rgb(' + (Math.min(255, colorValues.r * 1.5)) + ',' + (Math.min(255, colorValues.g * 1.5)) + ',' + (Math.min(255, colorValues.b * 1.5)) + ')';
+			const shadow = 'rgb(' + (Math.min(255, colorValues.r * 1.2)) + ',' + (Math.min(255, colorValues.g * 1.2)) + ',' + (Math.min(255, colorValues.b * 1.2)) + ')';
+
+			image.style.borderColor = color;
+			image.style.boxShadow = '0 0 0 2px #fff, 0 0 5px ' + shadow + ', 0 0 8px ' + shadow + ', 0 0 11px ' + shadow;
+
+			image.classList.add('active');
+
+			image.onclick = () => {
+				state.arcadian = {
+					bg,
+					color,
+					shadow,
+					image: dataUrl,
+				};
+
+				document.documentElement.style.setProperty('--bg', bg);
+				document.documentElement.style.setProperty('--color', color);
+				document.documentElement.style.setProperty('--shadow', shadow);
+
+				playLevel(state.level);
+				state.screen = 'game';
+
+				closeModal();
+			}
+		};
+
+		image.src = dataUrl;
+	}
+}
+
+function showMyArcadians(container: HTMLElement) {
+	if (state.nfts.length > 0) {
+		container.innerHTML = '';
+
+		for (let i = 0; i < state.nfts.length; i += 1) {
+			const nftId = state?.nfts?.[i]?.token_id ?? '9999';
+			addArcadian(container, nftId);
+		}
+	}
+}
+
 export async function openArcadiaScreen() {
-	const arcadianContainer = el('div.arcadians'); // arcadians.length > 0 ? el(, arcadians) : el('b', 'Failed to load Arcadians :(');
+	const myArcadianContainer = el('div.arcadians', 'Login to use your Arcadians');
+	const randomArcadianContainer = el('div.arcadians');
 
-	openModal(gameContainer, 'Arcadia', [
-		el('p', 'Pick an Arcadian to change the theme!'),
-		arcadianContainer,
-	], [{
-		type: 'danger',
+	const buttons: Button[] = [];
+
+	if (state.wallet !== '') {
+		buttons.push({
+			type: 'danger',
+			content: 'Logout',
+			onClickCallback: () => {
+				state.wallet = '';
+				state.nfts = [];
+	
+				resetTheme();
+			},
+		});
+	}
+
+	buttons.push({
+		type: 'normal',
 		content: 'Reset',
-		onClickCallback: () => {
-			state.arcadian = {
-				bg: '',
-				color: '',
-				shadow: '',
-				image: '',
-			};
-
-			document.documentElement.style.setProperty('--bg', '#03182b');
-			document.documentElement.style.setProperty('--color', '#8be9ff');
-			document.documentElement.style.setProperty('--shadow', '#4f838f');
-
-			playLevel(state.level);
-			state.screen = 'game';
-		},
+		onClickCallback: resetTheme,
 	}, {
 		type: 'normal',
 		content: 'Close',
 		onClickCallback: () => {},
 	}, {
-		type: 'primary',
+		type: 'normal',
 		content: 'Refresh',
 		onClickCallback: () => {
 			requestAnimationFrame(openArcadiaScreen);
 		},
-	}], () => {});
+	});
 
-	const images: HTMLImageElement[] = [];
+	if (state.wallet === '') {
+		buttons.push({
+			type: 'primary',
+			content: 'Login',
+			onClickCallback: async () => {
+				if (window.ethereum) {
+					const provider = new window._ethers.providers.Web3Provider(window.ethereum, "any");
+					await provider.send("eth_requestAccounts", []);
+					const signer = provider.getSigner();
+	
+					let wallet = await signer.getAddress();
+	
+					if (wallet) {
+						state.wallet = wallet;
 
-	for (let i = 0; i < 9; i += 1) {
-		images.push(el('img') as HTMLImageElement);
-		mount(arcadianContainer, images[i]);
+						const options = {method: 'GET', headers: {Accept: 'application/json', 'X-API-Key': 'T25ZjLSEEP76wQrXEgTrSKfnr5MWAcWvwLJuNsPdf0tuiArk7KcQMwpJimnzXfsm'}};
+	
+						fetch('https://deep-index.moralis.io/api/v2/' + wallet + '/nft?chain=eth&format=decimal&token_addresses=0xc3c8a1e1ce5386258176400541922c414e1b35fd', options)
+							.then(response => response.json())
+							.then(response => {
+								console.log('=========================');
+								console.log('=========================');
+								console.log('====== CHECK BELOW ======');
+								console.log('=========================');
+								console.log('=========================');
+
+								console.log('wallet', wallet);
+								console.log('response', JSON.stringify(response));
+
+								state.nfts = response.result;
+								
+								showMyArcadians(myArcadianContainer);
+								requestAnimationFrame(openArcadiaScreen);
+							})
+							.catch(err => alert(err.message));
+
+						return;
+					}
+				}
+
+				alert('No wallet installed in browser :(');
+			},
+		});
+	} else {
+		myArcadianContainer.innerHTML = 'You have no Arcadians :(';
 	}
 
+	showMyArcadians(myArcadianContainer);
+
+	openModal(gameContainer, 'Arcadia', [
+		el('p', 'Pick an Arcadian to change the theme!'),
+		el('b.sep', 'Your Arcadians'),
+		myArcadianContainer,
+		el('b.sep', 'Random Arcadians'),
+		randomArcadianContainer,
+	], buttons, () => {});
+
 	for (let i = 0; i < 9; i += 1) {
-		const arcadian = await (await fetch('https://api.arcadians.io/' + randomIntFromInterval(1, 3000))).json();
-
-		if (arcadian?.image) {
-			let blob = await fetch(arcadian.image).then(r => r.blob());
-			let dataUrl: string = await new Promise(resolve =>
-			{
-				let reader = new FileReader();
-				reader.onload = () => resolve(reader.result as string);
-				reader.readAsDataURL(blob);
-			});
-
-			images[i].onload = () => {
-				const colorValues = getAverageRGB(images[i]);
-
-				const bg = 'rgb(' + (Math.max(0, colorValues.r * 0.25)) + ',' + (Math.max(0, colorValues.g * 0.25)) + ',' + (Math.max(0, colorValues.b * 0.25)) + ')';
-				const color = 'rgb(' + (Math.min(255, colorValues.r * 1.5)) + ',' + (Math.min(255, colorValues.g * 1.5)) + ',' + (Math.min(255, colorValues.b * 1.5)) + ')';
-				const shadow = 'rgb(' + (Math.min(255, colorValues.r * 1.2)) + ',' + (Math.min(255, colorValues.g * 1.2)) + ',' + (Math.min(255, colorValues.b * 1.2)) + ')';
-
-				images[i].style.borderColor = color;
-				images[i].style.boxShadow = '0 0 3px ' + shadow + ', 0 0 6px ' + shadow + ', 0 0 9px ' + shadow;
-
-				images[i].classList.add('active');
-
-				images[i].onclick = () => {
-					state.arcadian = {
-						bg,
-						color,
-						shadow,
-						image: dataUrl,
-					};
-
-					document.documentElement.style.setProperty('--bg', bg);
-					document.documentElement.style.setProperty('--color', color);
-					document.documentElement.style.setProperty('--shadow', shadow);
-
-					playLevel(state.level);
-					state.screen = 'game';
-
-					closeModal();
-				}
-			};
-
-			images[i].src = dataUrl;
-		}
+		addArcadian(randomArcadianContainer, randomIntFromInterval(1, 3000).toString());
 	}
 }
 

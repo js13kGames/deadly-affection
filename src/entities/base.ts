@@ -88,10 +88,10 @@ export class Base {
 		processPuzzleProgress();
 	}
 
-	interact(action: 'add' | 'remove', from?: number) {
-		if (action === 'remove' && from != null) {
+	interact(action: 'add' | 'remove', from?: number, checked: string[] = []) {
+		if (action === 'remove' && from != null && this.name !== 'start') {
 			if (this.inputs[from] === false) {
-				return;
+				return checked;
 			}
 
 			this.inputs[from] = false;
@@ -99,19 +99,14 @@ export class Base {
 
 		if (action === 'add' && from != null) {
 			if (this.inputs[from] === true) {
-				return;
+				return checked;
 			}
 
 			this.inputs[from] = true;
 		}
 
-		// console.warn(this.name, this.cellKey, action, from);
-
 		const newOutputs: [boolean, boolean, boolean, boolean] = [false, false, false, false];
 
-		// console.log('inputs', this.inputs);
-		// console.log('paths', this.paths);
-		
 		for (let i = 0; i < this.inputs.length; i += 1) {
 			if (this.inputs[i] === true) {
 				const path = this.paths[i];
@@ -130,13 +125,20 @@ export class Base {
 			const oldOutput = this.outputs[i];
 			const newOutput = newOutputs[i];
 
+			if (checked.includes(this.cellKey + i)) {
+				console.warn(this.cellKey + i);
+				continue;
+			}
+
+			checked.push(this.cellKey + i);
+
 			if (oldOutput === true && newOutput === false) {
 				this.outputs[i] = false;
 
 				this.removeLine(i as 0 | 1 | 2 | 3);
 
 				if (this.neighbors[i] && this.neighbors[i].outputs[(i + 2) % 4] === false) {
-					this.neighbors[i].interact('remove', (i + 2) % 4);
+					checked = this.neighbors[i].interact('remove', (i + 2) % 4, checked);
 				}
 			} else if (oldOutput === false && newOutput === true) {
 				this.outputs[i] = true;
@@ -144,15 +146,22 @@ export class Base {
 				this.addLine(i as 0 | 1 | 2 | 3);
 
 				if (this.neighbors[i]) {
-					this.neighbors[i].interact('add', (i + 2) % 4);
+					checked = this.neighbors[i].interact('add', (i + 2) % 4, checked);
 				}
 			}
 		}
+
+		// console.log(action, this.cellKey, from);
+		// console.log(this.inputs);
+		// console.log(this.outputs);
+		// console.log(this.paths);
 
 		this.cellElement.classList.toggle('active', this.isActive());
 		this.iconElement.classList.toggle('active', this.isActive());
 		this.cellElement.classList.toggle('active-output', this.isActiveOutput());
 		this.iconElement.classList.toggle('active-output', this.isActiveOutput());
+
+		return checked;
 	}
 
 	addLine(direction: 0 | 1 | 2 | 3) {

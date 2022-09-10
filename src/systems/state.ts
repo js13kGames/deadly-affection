@@ -10,6 +10,8 @@ export type State = {
 	sound: boolean | null;
 	coilTotal: number;
 	near: boolean;
+	wallet: string;
+	nfts: any[];
 	arcadian: {
 		bg: string;
 		color: string;
@@ -26,6 +28,8 @@ export const emptyState: State = {
 	sound: null,
 	coilTotal: 0,
 	near: false,
+	wallet: '',
+	nfts: [],
 	arcadian: {
 		bg: '',
 		color: '',
