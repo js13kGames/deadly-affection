@@ -1,7 +1,7 @@
 import { playSound } from '../components/music';
 import { el, mount } from '../helpers/redom';
 import { screens } from '../systems/game';
-import { processPuzzleProgress, recreateAllLines } from '../systems/play';
+import { recreateAllLines } from '../systems/play';
 import { Rotation } from './../data/levels';
 
 export type PathDirection = Rotation[] | Rotation | null;
