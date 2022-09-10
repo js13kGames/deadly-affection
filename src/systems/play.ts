@@ -124,7 +124,7 @@ export function playLevel(level: number) {
 	});
 	processPuzzleProgress();
 
-	state.screen = 'game';
+	screens.openScreen('game');
 	state.level = level;
 
 	mount(screens.screens.game, el('b', (state.level + 1).toString()));
@@ -187,7 +187,7 @@ export function processPuzzleProgress() {
 				content: 'Levels',
 				type: 'normal',
 				onClickCallback: () => {
-					state.screen = 'levels';
+					screens.openScreen('levels');
 				},
 			},
 			{
@@ -231,7 +231,7 @@ export function processPuzzleProgress() {
 			playSound('victory');
 			openModal(gameContainer, 'You Won!', el('div.hearts', collectableElements), buttons, () => {
 				if (goToLevels) {
-					state.screen = 'levels';
+					screens.openScreen('levels');
 				}
 			});
 

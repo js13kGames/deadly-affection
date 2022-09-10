@@ -32,7 +32,6 @@
 		"singleQuote": true
 	},
 	"dependencies": {
-		"object-observer": "^5.0.4",
 		"zzfx": "^1.1.8"
 	}
 }

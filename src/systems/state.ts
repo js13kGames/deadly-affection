@@ -1,12 +1,8 @@
-import { createStateObserver } from '../helpers/observers';
-
 const localStorageKey = 'deadly-affection';
 
-export type Screen = 'game' | 'levels';
 export type Setting = 'sound' | 'fullscreen' | 'screen';
 
 export type State = {
-	screen: Screen;
 	sound: boolean | null;
 	coilTotal: number;
 	near: boolean;
@@ -24,7 +20,6 @@ export type State = {
 };
 
 export const emptyState: State = {
-	screen: 'game',
 	sound: null,
 	coilTotal: 0,
 	near: false,
@@ -44,8 +39,7 @@ export const emptyState: State = {
 export let state: State;
 
 export function initGameState() {
-	const savedState = loadState();
-	state = createStateObserver(savedState);
+	state = loadState();
 
 	state.fullscreen = document.fullscreenElement != null;
 	document.onfullscreenchange = () => {

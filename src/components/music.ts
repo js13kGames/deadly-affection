@@ -1,4 +1,4 @@
-import { gameContainer } from '../systems/game';
+import { gameContainer, soundToggle } from '../systems/game';
 import { state } from '../systems/state';
 import { 
 	initAudioContext,
@@ -25,6 +25,9 @@ export function initMusic() {
 				content: 'Rock ON!',
 				onClickCallback: () => {
 					state.sound = true;
+					if (soundToggle) {
+						soundToggle.renderState(state.sound);
+					}
 				},
 			}
 		], null);

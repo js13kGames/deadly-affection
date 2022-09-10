@@ -238,7 +238,7 @@ button {
 	border-radius: 4px;
 	color: #fff;
 	cursor: pointer;
-	filter: brightness(0.5);
+	filter: brightness(0.75);
 }
 
 button:hover {
@@ -564,6 +564,7 @@ b.sep:after {
 	cursor: pointer;
 	border-radius: 5px;
 	transform: scale(0.25);
+	box-shadow: 0 0 0 2px #fff, 0 0 5px var(--shadow), 0 0 8px var(--shadow), 0 0 11px var(--shadow);
 	transition: all 500ms cubic-bezier(0.3, 0.53, 0.08, 1.5);
 	animation: spin 1s linear infinite;
 }

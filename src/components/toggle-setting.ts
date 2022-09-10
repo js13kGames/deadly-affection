@@ -1,32 +1,34 @@
-import { Change } from 'object-observer';
 import { getSVGElement } from '../helpers/utilities';
-import { observeState, unobserveState } from '../helpers/observers';
 import { Setting, state } from '../systems/state';
 import { el, mount } from '../helpers/redom';
 import { zzfxX } from '../systems/zzfx';
 import { playSound } from './music';
+import { screens } from '../systems/game';
 
 export class ToggleSetting {
-	observerId: number;
-
 	root: HTMLElement;
 
-	constructor(container: HTMLElement, icon: string, private path: Setting, top: number, right: number) {
+	constructor(
+		container: HTMLElement, 
+		icon: string, 
+		private path: Setting, 
+		top: number, 
+		right: number
+	) {
 		this.root = el('div.setting', getSVGElement(icon, '#fff'));
 		this.root.style.top = `${top}px`;
 		this.root.style.right = `${right}px`;
-
-		this.observerId = observeState(path, this.onChange);
+		console.warn(path);
 
 		mount(container, this.root);
 
 		if (path === 'screen') {
-			state.screen = 'game';
-			this.renderState(state[path] === 'levels', false);
+			screens.openScreen('game');
+			this.renderState(screens.screen === 'levels', false);
 			this.root.onclick = () => {
 				playSound('tap');
-				state[path] = state[path] === 'game' ? 'levels' : 'game';	
-				this.renderState(state[path] === 'levels');
+				screens.openScreen(screens.screen === 'game' ? 'levels' : 'game');
+				this.renderState(screens.screen === 'levels');
 			};
 		} else {
 			this.renderState(state[path] as boolean, false);
@@ -38,16 +40,7 @@ export class ToggleSetting {
 		}
 	}
 
-	private onChange = (change: Change) => {
-		if (change.type === 'update') {
-			this.renderState(change.value);
-			return true;
-		}
-
-		return false;
-	};
-
-	private renderState = (newState: boolean, showTooltip = true) => {
+	public renderState = (newState: boolean, showTooltip = true) => {
 		this.root.classList.toggle('active', newState);
 
 		if (this.path === 'sound') {
@@ -58,14 +51,10 @@ export class ToggleSetting {
 
 		if (this.path === 'fullscreen' && showTooltip) {
 			if (!document.fullscreenElement) {
-				document.documentElement.requestFullscreen().catch((reason) => console.log(reason));
+				document.documentElement.requestFullscreen().catch((reason) => console.error(reason));
 			} else if (document.exitFullscreen) {
 				document.exitFullscreen();
 			}
 		}
-	};
-
-	destroy = () => {
-		unobserveState(this.observerId);
 	};
 }

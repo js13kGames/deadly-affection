@@ -44,18 +44,24 @@ export function openCoilScreen() {
 		toggleCoilEarning(coilEarningContainer);
 	}, 500);
 
-	openModal(gameContainer, 'Coil', [
-		el('p', 'Access 3 extra levels with Coil!'),
-		coilEarningContainer,
-	], [{
+	const buttons: Button[] = [{
 		type: 'normal',
 		content: 'Close',
 		onClickCallback: () => {},
-	}, {
-		type: 'primary',
-		content: 'Get Coil',
-		onClickCallback: () => { window.open('https://coil.com', '_blank')?.focus() },
-	}], () => {
+	}];
+
+	if (getCoilEarnings() === '0 USD') {
+		buttons.push({
+			type: 'primary',
+			content: 'Get Coil',
+			onClickCallback: () => { window.open('https://coil.com', '_blank')?.focus() },
+		});
+	}
+
+	openModal(gameContainer, 'Coil', [
+		el('p', 'Access 3 extra levels with Coil!'),
+		coilEarningContainer,
+	], buttons, () => {
 		clearInterval(coilEarningInterval);
 	});
 }
@@ -190,7 +196,7 @@ function resetTheme() {
 	document.documentElement.style.setProperty('--shadow', '#4f838f');
 
 	playLevel(state.level);
-	state.screen = 'game';
+	screens.openScreen('game');
 }
 
 async function addArcadian(container: HTMLElement, id: string) {
@@ -233,7 +239,7 @@ async function addArcadian(container: HTMLElement, id: string) {
 				document.documentElement.style.setProperty('--shadow', shadow);
 
 				playLevel(state.level);
-				state.screen = 'game';
+				screens.openScreen('game');
 
 				closeModal();
 			}
@@ -342,8 +348,15 @@ export async function openArcadiaScreen() {
 	}
 }
 
+export let soundToggle: ToggleSetting;
+
 export function initGame() {
 	gameContainer = el('div.game');
+
+	screens = new Screens(gameContainer, {
+		levels: createLevelsScreen(),
+		game: createGameScreen(),
+	});
 
 	new LinkSetting(gameContainer, SVGs.discord, '#5865F2', 4, 360, 'https://discord.gg/kPf8XwNuZT');
 	new LinkSetting(gameContainer, SVGs.coffee, '#FBAA19', 40, 360, 'https://ko-fi.com/martintale?ref=deadly-affection');
@@ -352,18 +365,13 @@ export function initGame() {
 	new LinkSetting(gameContainer, SVGs.coil, '#FFFFFF', 118, 360, openCoilScreen);
 	new LinkSetting(gameContainer, SVGs.joystick, '#ff3ed9', 158, 360, openArcadiaScreen);
 
-	new ToggleSetting(gameContainer, SVGs.sound, 'sound', 4, 4);
+	soundToggle = new ToggleSetting(gameContainer, SVGs.sound, 'sound', 4, 4);
 	let settingTop = 40;
 	if (document.fullscreenEnabled) {
 		new ToggleSetting(gameContainer, SVGs.fullscreen, 'fullscreen', 40, 4);
 		settingTop = 76
 	}
 	new ToggleSetting(gameContainer, SVGs.levels, 'screen', settingTop, 4);
-
-	screens = new Screens(gameContainer, {
-		levels: createLevelsScreen(),
-		game: createGameScreen(),
-	});
 
 	mount(document.body, gameContainer);
 
