@@ -30,12 +30,14 @@ const entities = [
 	Collectable,
 ];
 
-export let cells: { [key: string]: Empty | Block | Start | End | TurnOneSide };
+export let cells: { [key: string]: Base };
+let startCells: string[] = [];
 
 export function playLevel(level: number) {
 	cells = {};
 	screens.screens.game.innerHTML = '';
 	state.level = level;
+	startCells = [];
 
 	const currentLevel = levels[level];
 	const boardWidth = currentLevel[0][0];
@@ -51,8 +53,6 @@ export function playLevel(level: number) {
 
 	const widthPadding = (300 - (cellSize - cellMargin) * boardWidth) / 2;
 	const heightPadding = 0; // (400 - (cellSize - cellMargin) * boardHeight) / 2;
-
-	let startCells = [];
 
 	for (let i = 0; i < currentLevel[1].length; i += 1) {
 		const x = i % boardWidth;
@@ -110,9 +110,9 @@ export function playLevel(level: number) {
 		cells[x + '-' + y].neighbors = getNeighboringCells(x, y);
 	}
 
-	startCells.forEach((cellKey) => {
-		cells[cellKey].interact('add');
+	recreateAllLines();
 
+	startCells.forEach((cellKey) => {
 		const directions: ('top' | 'right' | 'bottom' | 'left')[] = ['top', 'right', 'bottom', 'left'];
 		cells[cellKey].outputs.forEach((output, i) => {
 			if (output) {
@@ -130,6 +130,35 @@ export function playLevel(level: number) {
 	mount(screens.screens.game, el('b', (state.level + 1).toString()));
 
 	renderLevels();
+}
+
+export function recreateAllLines() {
+	const cellValues = Object.values(cells);
+	for (let i = 0; i < cellValues.length; i += 1) {
+		const cell = cellValues[i];
+		for (let j = 0; j < 4; j += 1) {
+			cell.removeLine(j as 0 | 1 | 2 | 3);
+		}
+		if (cell.name !== 'start') {
+			cell.inputs = [false, false, false, false];
+		}
+		cell.outputs = [false, false, false, false];
+	}
+
+	startCells.forEach((cellKey) => {
+		cells[cellKey].interact('add');
+	});
+
+	for (let i = 0; i < cellValues.length; i += 1) {
+		const cell = cellValues[i];
+
+		cell.cellElement.classList.toggle('active', cell.isActive());
+		cell.iconElement.classList.toggle('active', cell.isActive());
+		cell.cellElement.classList.toggle('active-output', cell.isActiveOutput());
+		cell.iconElement.classList.toggle('active-output', cell.isActiveOutput());
+	}
+
+	processPuzzleProgress();
 }
 
 function createEntity(entity: Entity, cellKey: string) {

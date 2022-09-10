@@ -1,7 +1,7 @@
 import { playSound } from '../components/music';
 import { el, mount } from '../helpers/redom';
 import { screens } from '../systems/game';
-import { processPuzzleProgress } from '../systems/play';
+import { processPuzzleProgress, recreateAllLines } from '../systems/play';
 import { Rotation } from './../data/levels';
 
 export type PathDirection = Rotation[] | Rotation | null;
@@ -83,9 +83,7 @@ export class Base {
 			this.paths.push(poppedpath != null ? poppedpath : null);
 		}
 
-		this.interact('add');
-
-		processPuzzleProgress();
+		recreateAllLines();
 	}
 
 	interact(action: 'add' | 'remove', from?: number, checked: string[] = []) {
@@ -125,22 +123,12 @@ export class Base {
 			const oldOutput = this.outputs[i];
 			const newOutput = newOutputs[i];
 
-			if (checked.includes(this.cellKey + i)) {
-				// console.warn(this.cellKey + i);
-				continue;
-			}
+			// if (checked.includes(this.cellKey + i)) {
+			// 	continue;
+			// }
 
 			checked.push(this.cellKey + i);
-
-			if (oldOutput === true && newOutput === false) {
-				this.outputs[i] = false;
-
-				this.removeLine(i as 0 | 1 | 2 | 3);
-
-				if (this.neighbors[i] && this.neighbors[i].outputs[(i + 2) % 4] === false) {
-					checked = this.neighbors[i].interact('remove', (i + 2) % 4, checked);
-				}
-			} else if (oldOutput === false && newOutput === true) {
+			if (oldOutput === false && newOutput === true) {
 				this.outputs[i] = true;
 
 				this.addLine(i as 0 | 1 | 2 | 3);
@@ -150,16 +138,6 @@ export class Base {
 				}
 			}
 		}
-
-		// console.log(action, this.cellKey, from);
-		// console.log(this.inputs);
-		// console.log(this.outputs);
-		// console.log(this.paths);
-
-		this.cellElement.classList.toggle('active', this.isActive());
-		this.iconElement.classList.toggle('active', this.isActive());
-		this.cellElement.classList.toggle('active-output', this.isActiveOutput());
-		this.iconElement.classList.toggle('active-output', this.isActiveOutput());
 
 		return checked;
 	}
