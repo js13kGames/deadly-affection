@@ -57,11 +57,8 @@ export function loginWithNEAR() {
 }
 
 export function logoutWithNEAR() {
-	console.log('logging out');
 	if (isLoggedInWithNEAR()) {
-		console.log('was logged in');
 		walletConnection.signOut();
-		console.log('logged out');
 		location.reload();
 	}
 }
@@ -78,6 +75,4 @@ export async function buyItem(item: string, price: number) {
 	if (isLoggedInWithNEAR()) {
 		await walletConnection.account().functionCall('dev-1659898084435-74777876829079', 'buy', { item, price }, MAX_GAS, window.nearApi.utils.format.parseNearAmount("1"));
 	}
-
-	console.log(`Buying ${item} for ${price} NEAR!`);
 }

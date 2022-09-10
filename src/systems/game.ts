@@ -309,15 +309,6 @@ export async function openArcadiaScreen() {
 						fetch('https://deep-index.moralis.io/api/v2/' + wallet + '/nft?chain=eth&format=decimal&token_addresses=0xc3c8a1e1ce5386258176400541922c414e1b35fd', options)
 							.then(response => response.json())
 							.then(response => {
-								console.log('=========================');
-								console.log('=========================');
-								console.log('====== CHECK BELOW ======');
-								console.log('=========================');
-								console.log('=========================');
-
-								console.log('wallet', wallet);
-								console.log('response', JSON.stringify(response));
-
 								state.nfts = response.result;
 								
 								showMyArcadians(myArcadianContainer);
@@ -344,7 +335,7 @@ export async function openArcadiaScreen() {
 		myArcadianContainer,
 		el('b.sep', 'Random Arcadians'),
 		randomArcadianContainer,
-	], buttons, () => {});
+	], buttons, () => {}, 'arcadian-modal');
 
 	for (let i = 0; i < 9; i += 1) {
 		addArcadian(randomArcadianContainer, randomIntFromInterval(1, 3000).toString());

@@ -9,6 +9,7 @@ export function openModal(
 	content: string | HTMLElement | HTMLElement[], 
 	buttons: Button[] = [],
 	onCloseCallback: (() => void) | null,
+	className = 'none',
 ) {
 	closeModal();
 
@@ -50,7 +51,7 @@ export function openModal(
 		content = el('p', content);
 	}
 
-	modalElement = el('div.modal', [
+	modalElement = el('div.modal.' + className, [
 		modalOverlay,
 		el('div.modal-container', [
 			el('header', header),

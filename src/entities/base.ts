@@ -126,7 +126,7 @@ export class Base {
 			const newOutput = newOutputs[i];
 
 			if (checked.includes(this.cellKey + i)) {
-				console.warn(this.cellKey + i);
+				// console.warn(this.cellKey + i);
 				continue;
 			}
 

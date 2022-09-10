@@ -725,11 +725,11 @@ textarea {
     height: 50%;
 }
 
-main {
+.arcadian-modal main {
 	max-height: 400px;
 	overflow-y: auto;
 }
 
-main::-webkit-scrollbar {
+.arcadian-modal main::-webkit-scrollbar {
     display: none;
 }
