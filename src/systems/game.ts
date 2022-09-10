@@ -222,7 +222,7 @@ async function addArcadian(container: HTMLElement, id: string) {
 			const shadow = 'rgb(' + (Math.min(255, colorValues.r * 1.2)) + ',' + (Math.min(255, colorValues.g * 1.2)) + ',' + (Math.min(255, colorValues.b * 1.2)) + ')';
 
 			image.style.borderColor = color;
-			image.style.boxShadow = '0 0 0 2px #fff, 0 0 5px ' + shadow + ', 0 0 8px ' + shadow + ', 0 0 11px ' + shadow;
+			image.style.boxShadow = '0 0 0 2px ' + color + ', 0 0 5px ' + shadow + ', 0 0 8px ' + shadow + ', 0 0 11px ' + shadow;
 
 			image.classList.add('active');
 
