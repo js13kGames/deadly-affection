@@ -175,34 +175,6 @@ export class Base {
 		line.style.left = (this.left + this.distanceToCenter) + 'px';
 		line.style.transform = 'rotate(' + 90 * direction + 'deg)';
 
-		// if (direction === 0) {
-		// 	line.style.width = '2px';
-		// 	line.style.height = lineLength + 'px';
-		// 	line.style.bottom = (this.bottom + this.distanceToCenter) + 'px';
-		// 	line.style.left = (this.left + this.distanceToCenter) + 'px';
-		// } 
-		
-		// if (direction === 1) {
-		// 	line.style.width = lineLength + 'px';
-		// 	line.style.height = '2px';
-		// 	line.style.bottom = (this.bottom + this.distanceToCenter) + 'px';
-		// 	line.style.left = (this.left + this.distanceToCenter) + 'px';
-		// }
-		
-		// if (direction === 2) {
-		// 	line.style.width = '2px';
-		// 	line.style.height = lineLength + 'px';
-		// 	line.style.bottom = (this.bottom + this.distanceToCenter - lineLength) + 'px';
-		// 	line.style.left = (this.left + this.distanceToCenter) + 'px';
-		// }
-		
-		// if (direction === 3) {
-		// 	line.style.width = lineLength + 'px';
-		// 	line.style.height = '2px';
-		// 	line.style.bottom = (this.bottom + this.distanceToCenter) + 'px';
-		// 	line.style.left = (this.left + this.distanceToCenter - lineLength + 2) + 'px';
-		// }
-
 		mount(screens.screens.game, line);
 
 		this.lines[direction] = line;
