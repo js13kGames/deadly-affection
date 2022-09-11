@@ -1,5 +1,9 @@
 Deadly Affection is a puzzle game where you (Necromancer) long for eternal love with Fairy but only Death is eternal so you bring her to your realm.
 
+# How to Play
+
+Rotate tiles and pipes using left/right click to target death beam from Necromancer to Fairy. Collect hearts along the way for bonus challenge.
+
 # NEAR
 
 You can log in with NEAR to 
