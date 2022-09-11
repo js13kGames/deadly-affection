@@ -18,7 +18,7 @@ You can log in to
 # OP Games
 
 - Interoperable - the game uses NFTs that can be used as main characters, in addition to completely changing the theme/atmosphere of the game
-- Open Source - the game is open source and publically available on GitHub
+- Open Source - the game is open source and publicly available on GitHub
 - Unstoppable 
 - - I'm working on a level editor for the game that anyone will be able to use and share their levels to be played by all others
 - - There wasn't space for it within 13kb but this will enable the game to go on forever with user-generated content together with improvements to the game by it being Open Source
