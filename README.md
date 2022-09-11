@@ -1,4 +1,4 @@
-Deadly Affections is a puzzle game where you (Necromancer) long for eternal love with Fairy but only Death is eternal so you bring her to your realm.
+Deadly Affection is a puzzle game where you (Necromancer) long for eternal love with Fairy but only Death is eternal so you bring her to your realm.
 
 # NEAR
 
